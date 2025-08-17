@@ -5,8 +5,8 @@ const BookSection = () => {
   const [donationBooks, setDonationBooks] = useState([
     { 
       id: 1, 
-      title: "The Magic Garden", 
-      author: "Sarah Johnson", 
+      title: "Book Name", 
+      author: "DonorBook", 
       age: "5-8 years", 
       genre: "Fantasy",
       coverImage: "https://picsum.photos/seed/magic-garden/200/280",
@@ -14,8 +14,8 @@ const BookSection = () => {
     },
     { 
       id: 2, 
-      title: "Adventures in Space", 
-      author: "Mike Chen", 
+      title: "Book Name", 
+      author: "Donor Name", 
       age: "6-10 years", 
       genre: "Sci-Fi",
       coverImage: "https://picsum.photos/seed/space-adventure/200/280",
@@ -23,8 +23,8 @@ const BookSection = () => {
     },
     { 
       id: 3, 
-      title: "Friendship Tales", 
-      author: "Emma Wilson", 
+      title: "Book Name", 
+      author: "Donor Name", 
       age: "4-7 years", 
       genre: "Social Skills",
       coverImage: "https://picsum.photos/seed/friendship/200/280",
@@ -32,8 +32,8 @@ const BookSection = () => {
     },
     { 
       id: 4, 
-      title: "Ocean Mysteries", 
-      author: "David Brown", 
+      title: "Book Name", 
+      author: "Donor Name", 
       age: "7-11 years", 
       genre: "Educational",
       coverImage: "https://picsum.photos/seed/ocean-mysteries/200/280",
@@ -202,7 +202,7 @@ const BookSection = () => {
             </div>
             <h3 className="text-blue-700 text-3xl mb-4 flex items-center justify-center gap-2">
               <Heart className="w-8 h-8 text-orange-500" fill="currentColor" />
-              Share the Joy of Reading!
+              Authors Who Care
             </h3>
             <p className="text-gray-600 text-lg leading-relaxed max-w-3xl mx-auto">
               Help us spread the magic of books! Donate these wonderful stories to children who need them most. 

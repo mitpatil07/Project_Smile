@@ -105,7 +105,7 @@ const AboutPage = () => {
             <Smile size={20} className="sm:w-6 sm:h-6 md:w-8 md:h-8" color="white" />
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 drop-shadow-lg leading-tight">
-            About The Smile
+            About The Project Smile
           </h1>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed opacity-90 max-w-2xl mx-auto">
             Discover our story, vision, and the passionate people driving our mission forward.
