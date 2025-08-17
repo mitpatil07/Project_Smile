@@ -47,7 +47,7 @@ const LandingPage = () => {
 
             {/* Action Button */}
             <div className="flex justify-center mb-12">
-              <button
+              <a 
                 className="group relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold px-10 py-4 rounded-full text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-lg hover:shadow-xl min-w-[200px]"
                 style={{
                   boxShadow: '0 8px 30px rgba(255, 107, 0, 0.4), 0 4px 15px rgba(0, 0, 0, 0.3)'
@@ -55,7 +55,7 @@ const LandingPage = () => {
               >
                 <span className="relative z-10">Join The Live Stream</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
+              </a>
             </div>
 
             {/* Schedule Info Card */}
@@ -67,7 +67,7 @@ const LandingPage = () => {
                 </span>
                 <span className="text-lg text-white font-medium text-center"
                   style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.6)' }}>
-                  1st & 15th of every month <br /> 10 AM EST
+                  1st & 15th of every month
                 </span>
               </div>
             </div>
