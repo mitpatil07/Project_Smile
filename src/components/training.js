@@ -109,10 +109,6 @@ const SkillTraining = () => {
                   <h3 className="text-xl font-bold text-blue-700 leading-tight flex-1 mr-3 group-hover:text-blue-800 transition-colors">
                     {course.title}
                   </h3>
-                  <div className="flex items-center gap-1 bg-yellow-50 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold whitespace-nowrap">
-                    <span className="text-yellow-500">⭐</span>
-                    {course.rating}
-                  </div>
                 </div>
 
                 {/* Course Meta */}
