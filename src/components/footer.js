@@ -3,8 +3,7 @@ import { Twitter, Facebook, Instagram, Heart } from "lucide-react";
 
 const FOOTER_CONFIG = {
   brand: {
-    logo: "L",
-    name: "Smile",
+    name: "Project Smile",
     tagline: "Matching the God in Your Heart with the Wisdom in Your Head",
     mission: "Enrich • Encourage • Empower"
   },
@@ -60,9 +59,6 @@ const Footer = () => {
             <div className="max-w-sm mx-auto lg:mx-0">
               {/* Logo */}
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg border-2 border-white/20 transform hover:scale-105 transition-transform duration-300">
-                  {FOOTER_CONFIG.brand.logo}
-                </div>
                 <span className="text-3xl font-bold text-white drop-shadow-lg">
                   {FOOTER_CONFIG.brand.name}
                 </span>
