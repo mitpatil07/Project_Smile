@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   Heart, Play, Download, ExternalLink, Mail, Star, Award, Users, BookOpen, ArrowRight, Share2,
@@ -46,11 +45,13 @@ const AboutPage = () => {
       cover: bookCover,
       downloadLink: "https://drive.google.com/file/d/1TaGvzdEcFceDRK-as07JQsglsy3xlt5K/view",
       supportLink: "https://www.amazon.com/Healing-Addiction-Inner-Child-Break/dp/1963701496",
+      downloadCount: "398",
       isComingSoon: false
     },
     {
       title: "WE!: finding community connection in a divided world",
       cover: bookcover2,
+      downloadCount: "Coming Soon",
       isComingSoon: true
     },
   ];
@@ -355,9 +356,15 @@ const AboutPage = () => {
                       <h3 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold mb-5 text-gray-800 leading-tight`}>
                         {book.title}
                       </h3>
-                      <p className={`${isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-semibold`}>
+                      <p className={`${isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-semibold mb-6`}>
                         Stay tuned for this upcoming release!
                       </p>
+                      
+                      {/* Download Counter for Coming Soon */}
+                      <div className={`flex items-center gap-2 ${isMobile ? 'justify-center' : 'justify-start'} text-gray-500`}>
+                        <Download size={16} />
+                        <span className="text-sm font-medium">{book.downloadCount}</span>
+                      </div>
                     </div>
                   </div>
                 ) : (
@@ -373,13 +380,19 @@ const AboutPage = () => {
                       <p className={`${isMobile ? 'text-sm' : 'text-base'} leading-relaxed text-gray-700 mb-8 text-justify`}>
                         {book.description}
                       </p>
-                      <div className={`flex gap-4 ${isMobile ? 'flex-col' : 'flex-row'} items-center`}>
+                      <div className={`flex gap-4 ${isMobile ? 'flex-col' : 'flex-row'} items-center mb-4`}>
                         <a href={book.supportLink} className={`px-6 py-3 rounded-lg no-underline font-semibold transition-all duration-300 inline-flex items-center text-sm cursor-pointer border-none gap-2 justify-center bg-orange-600 text-white shadow-lg ${isMobile ? 'w-full' : ''}`}>
                           Support Author
                         </a>
                         <a href={book.downloadLink} className={`px-6 py-3 rounded-lg no-underline font-semibold transition-all duration-300 inline-flex items-center text-sm cursor-pointer gap-2 justify-center bg-transparent border-2 border-orange-600 text-orange-600 ${isMobile ? 'w-full' : ''}`}>
                           Download Free
                         </a>
+                      </div>
+                      
+                      {/* Download Counter */}
+                      <div className={`flex items-center gap-2 ${isMobile ? 'justify-center' : 'justify-start'} text-gray-600`}>
+                        <Download size={16} />
+                        <span className="text-sm font-medium">{book.downloadCount} Downloads</span>
                       </div>
                     </div>
                     <div className={`${isMobile ? 'flex-none' : 'flex-none w-72'} flex justify-center items-center`}>
