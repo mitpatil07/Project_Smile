@@ -1,0 +1,713 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Base Navbar Styles */
+.navbar-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: rgba(255, 160, 43, 0.81); /* Orange background */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 15px 0;
+  z-index: 1000;
+  border-bottom: 2px solid rgba(30, 144, 255, 0.3); /* Blue border */
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 2px 10px rgba(255, 140, 0, 0.2);
+}
+
+.navbar-header.scrolled {
+  background: rgba(36, 91, 211, 0.938); /* Blue background when scrolled */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 12px 0;
+  box-shadow: 0 4px 20px rgba(30, 144, 255, 0.3);
+  border-bottom: 2px solid rgba(255, 140, 0, 0.5); /* Orange border when scrolled */
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  gap: 20px;
+}
+
+
+.navbar-header.scrolled .navbar-logo {
+  color: white;
+}
+
+.navbar-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: #1e90ff; /* Blue background for logo icon */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  transform: rotate(0deg);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.navbar-header.scrolled .navbar-logo-icon {
+  background: #ff8c00; /* Orange when scrolled */
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.navbar-logo:hover .navbar-logo-icon {
+  transform: rotate(360deg) scale(1.1);
+  box-shadow: 0 4px 15px rgba(30, 144, 255, 0.4);
+}
+
+.navbar-header.scrolled .navbar-logo:hover .navbar-logo-icon {
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+}
+
+.navbar-logo-text {
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-logo:hover .navbar-logo-text {
+  transform: translateX(2px);
+}
+
+/* Desktop Navigation Menu */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.navbar-item {
+  position: relative;
+}
+
+.navbar-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.8rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  padding: 6px 10px;
+  display: block;
+  border-radius: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  border: 2px solid transparent;
+}
+
+.navbar-header.scrolled .navbar-link {
+  color: white;
+}
+
+/* Hover effect with enhanced styling */
+.navbar-link:hover {
+  color: white;
+  background: rgba(30, 144, 255, 0.4);
+  transform: translateY(-1px) scale(1.02);
+  border: 2px solid rgba(30, 144, 255, 0.5);
+  box-shadow: 0 2px 10px rgba(30, 144, 255, 0.3);
+  font-weight: 600;
+}
+
+.navbar-header.scrolled .navbar-link:hover {
+  background: rgba(255, 140, 0, 0.4);
+  border: 2px solid rgba(255, 140, 0, 0.5);
+  box-shadow: 0 2px 10px rgba(255, 140, 0, 0.3);
+}
+
+/* Active link styling with button-like appearance */
+.navbar-link.active {
+  color: white;
+  background: #1e90ff;
+  font-weight: 600;
+  transform: scale(1.02);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(30, 144, 255, 0.4);
+}
+
+.navbar-header.scrolled .navbar-link.active {
+  background: #ff8c00;
+  box-shadow: 0 2px 8px rgba(255, 140, 0, 0.4);
+}
+
+/* Remove animated underline - using button style instead */
+.navbar-link::after {
+  display: none;
+}
+
+/* Add subtle glow effect for better visibility */
+.navbar-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.navbar-link:hover::before {
+  opacity: 1;
+}
+
+/* Staggered animation for nav items */
+.navbar-item:nth-child(1) { animation-delay: 0.1s; }
+.navbar-item:nth-child(2) { animation-delay: 0.2s; }
+.navbar-item:nth-child(3) { animation-delay: 0.3s; }
+.navbar-item:nth-child(4) { animation-delay: 0.4s; }
+.navbar-item:nth-child(5) { animation-delay: 0.5s; }
+.navbar-item:nth-child(6) { animation-delay: 0.6s; }
+.navbar-item:nth-child(7) { animation-delay: 0.7s; }
+.navbar-item:nth-child(8) { animation-delay: 0.8s; }
+
+/* Actions Container */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: absolute;
+  right: 0;
+  z-index: 1001;
+}
+
+/* Donate Button */
+.navbar-btn-primary {
+  background: #1e90ff; /* Blue background */
+  color: white !important;
+  padding: 12px 24px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  text-shadow: none;
+  box-shadow: 0 2px 10px rgba(30, 144, 255, 0.3);
+}
+
+.navbar-header.scrolled .navbar-btn-primary {
+  background: #ff8c00; /* Orange when scrolled */
+  box-shadow: 0 2px 10px rgba(255, 140, 0, 0.3);
+}
+
+.navbar-btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.5s ease;
+}
+
+.navbar-btn-primary:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(30, 144, 255, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.navbar-header.scrolled .navbar-btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+}
+
+.navbar-btn-primary:hover::before {
+  left: 100%;
+}
+
+/* Mobile Menu Toggle */
+.navbar-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  flex-direction: column;
+  gap: 4px;
+  width: 30px;
+  height: 24px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.navbar-hamburger-line {
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-origin: center;
+  border-radius: 2px;
+}
+
+.navbar-header.scrolled .navbar-hamburger-line {
+  background-color: white;
+}
+
+/* Hamburger Animation */
+.navbar-mobile-toggle.active .navbar-hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translateY(7px);
+}
+
+.navbar-mobile-toggle.active .navbar-hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.navbar-mobile-toggle.active .navbar-hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translateY(-7px);
+}
+
+/* Mobile Menu Overlay */
+.navbar-mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 998;
+}
+
+.navbar-mobile-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Hide mobile donate by default */
+.navbar-mobile-donate {
+  display: none;
+}
+
+/* Desktop donate visible by default */
+.navbar-desktop-donate {
+  display: inline-flex;
+}
+
+/* Tablet Responsive Design */
+@media (max-width: 1024px) {
+  .navbar-menu {
+    gap: 0.4rem;
+    padding: 4px 6px;
+  }
+  
+  .navbar-link {
+    font-size: 0.75rem;
+    padding: 6px 8px;
+  }
+  
+  .navbar-btn-primary {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+/* Large screens - more spacing for navigation */
+@media (min-width: 1200px) {
+  .navbar-menu {
+    gap: 0.6rem;
+    padding: 6px 10px;
+  }
+  
+  .navbar-link {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0 15px;
+  }
+
+  .navbar-mobile-toggle {
+    display: flex;
+  }
+
+  .navbar-desktop-donate {
+    display: none;
+  }
+
+  .navbar-mobile-donate {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .navbar-mobile-donate .navbar-btn-primary {
+    width: 100%;
+    max-width: 200px;
+    padding: 14px 24px;
+    font-size: 15px;
+    border-radius: 30px;
+    background: #ff8c00;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Mobile Menu Styles */
+  .navbar-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 300px;
+    height: 100vh;
+    background: rgba(53, 154, 255, 0.878);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 80px 30px 30px;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    gap: 0;
+    z-index: 999;
+    overflow-y: auto;
+    border-left: 4px solid #ff8c00;
+    border-radius: 0;
+    border: none;
+  }
+
+  .navbar-menu-active {
+    right: 0;
+  }
+
+  .navbar-item {
+    width: 100%;
+    opacity: 0;
+    transform: translateX(30px);
+    animation: slideInRight 0.3s ease forwards;
+  }
+
+  .navbar-menu-active .navbar-item:nth-child(1) { animation-delay: 0.1s; }
+  .navbar-menu-active .navbar-item:nth-child(2) { animation-delay: 0.15s; }
+  .navbar-menu-active .navbar-item:nth-child(3) { animation-delay: 0.2s; }
+  .navbar-menu-active .navbar-item:nth-child(4) { animation-delay: 0.25s; }
+  .navbar-menu-active .navbar-item:nth-child(5) { animation-delay: 0.3s; }
+  .navbar-menu-active .navbar-item:nth-child(6) { animation-delay: 0.35s; }
+  .navbar-menu-active .navbar-item:nth-child(7) { animation-delay: 0.4s; }
+  .navbar-menu-active .navbar-item:nth-child(8) { animation-delay: 0.45s; }
+  .navbar-menu-active .navbar-item:nth-child(9) { animation-delay: 0.5s; }
+
+  .navbar-link {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 15px 15px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    text-shadow: none;
+  }
+
+  .navbar-link:hover,
+  .navbar-link.active {
+    color: white;
+    background: #ff8c00; /* Orange background for mobile hover/active */
+    border-bottom: 1px solid rgba(255, 140, 0, 0.3);
+    transform: translateX(5px);
+    box-shadow: 0 2px 10px rgba(255, 140, 0, 0.3);
+  }
+
+  .navbar-link::after {
+    display: none;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 10px;
+  }
+
+  .navbar-logo {
+    font-size: 1.3rem;
+  }
+
+  .navbar-logo-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+
+  .navbar-menu {
+    width: 100%;
+    right: -100%;
+  }
+
+  .navbar-menu-active {
+    right: 0;
+  }
+}
+
+/* Animations */
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Focus styles for accessibility */
+.navbar-link:focus,
+.navbar-btn-primary:focus,
+.navbar-mobile-toggle:focus {
+  outline: 2px solid #1e90ff;
+  outline-offset: 2px;
+}
+
+.navbar-header.scrolled .navbar-link:focus,
+.navbar-header.scrolled .navbar-btn-primary:focus,
+.navbar-header.scrolled .navbar-mobile-toggle:focus {
+  outline: 2px solid #ff8c00;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading animation for nav items */
+@keyframes fadeInNav {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-item {
+  animation: fadeInNav 0.5s ease forwards;
+}
+
+/* Active indicator dot - enhanced version */
+.navbar-link.active::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  opacity: 1;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+.navbar-header.scrolled .navbar-link.active::after {
+  background: white;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+  .navbar-link.active::before {
+    display: none;
+  }
+}
+
+/* Enhanced visual feedback */
+.navbar-header {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.navbar-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-header.scrolled::before {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+
+
+
+
+
+
+
+
+
+/* Logo Container */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  /* padding: 5px 5px; */
+  background: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+  border-radius: 12px;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8); /* Inner highlight */
+  backdrop-filter: blur(10px); /* Glassmorphism effect */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+/* Logo Image */
+.navbar-logo-img {
+  height: 60px; /* Adjust height as needed */
+  width: auto;
+  max-width: 150px; /* Prevent logo from being too wide */
+  object-fit: contain;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)); /* Additional shadow on the image itself */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar-logo-img {
+    height: 35px; /* Slightly smaller on mobile */
+    max-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo-img {
+    height: 30px; /* Even smaller on very small screens */
+    max-width: 100px;
+  }
+}
+
+/* If you want the logo to adapt when navbar is scrolled */
+.navbar-header.scrolled .navbar-logo-img {
+  height: 60px; /* Smaller when scrolled */
+  transition: height 0.3s ease;
+}
+
+/* Alternative: Strong contrast version for vibrant backgrounds */
+.navbar-logo-strong {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 14px 18px;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-logo-strong:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.3),
+    0 6px 20px rgba(0, 0, 0, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+  background: linear-gradient(145deg, #ffffff 0%, #ffffff 100%);
+}
+
+/* Dark background version */
+.navbar-logo-dark {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 12px 16px;
+  background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 12px;
+  box-shadow: 
+    0 6px 24px rgba(255, 255, 255, 0.1),
+    0 3px 12px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.navbar-logo-dark .navbar-logo-img {
+  filter: brightness(1.1) drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
+}
+
+/* Logo with brand name (if you want text alongside) */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.navbar-brand-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .navbar-logo-img {
+    height: 60px;
+    filter: brightness(1.1);
+  }
+  
+  .navbar-brand-text {
+    color: #fff;
+  }
+}
