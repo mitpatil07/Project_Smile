@@ -356,7 +356,7 @@ import ayushtomer from "../assets/founder/ayushtomar.png"
                   <p className="text-blue-500 font-medium text-sm md:text-base mb-3">{teamMember.role}</p>
                   <p className="text-gray-600 text-xs sm:text-sm md:text-base leading-relaxed mb-4">{teamMember.description}</p>
                   <div className="flex justify-center gap-2 md:gap-3 flex-wrap">
-                    <a href='#' target='_blank' className="px-2 py-1 md:px-3 md:py-2 bg-gray-100 text-blue-500 rounded-full text-xs md:text-sm font-medium hover:bg-blue-500 hover:text-white transition-all duration-300 hover:-translate-y-1">
+                    <a href='https://www.linkedin.com/in/ayush-kumar-207241347?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' target='_blank' className="px-2 py-1 md:px-3 md:py-2 bg-gray-100 text-blue-500 rounded-full text-xs md:text-sm font-medium hover:bg-blue-500 hover:text-white transition-all duration-300 hover:-translate-y-1">
                       LinkedIn
                     </a>
                   </div>
