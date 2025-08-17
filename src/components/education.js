@@ -55,7 +55,7 @@ const COURSES_DATA = [
     id: 1, 
     title: "1st and 2nd Grade Educational Videos", 
     description: "A curated playlist of fun and educational videos for children in 1st and 2nd grade.", 
-    students: 390, 
+    students: 890, 
     level: "Beginner",
     duration: "7 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE05_C8bL0CHQ351oTG5AvRhe" 
@@ -64,7 +64,7 @@ const COURSES_DATA = [
     id: 2, 
     title: "PreSchool Learning Videos", 
     description: "Engaging videos designed to help preschoolers learn basic concepts in an enjoyable way.", 
-    students: 450, 
+    students: 750, 
     level: "Beginner",
     duration: "13 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE044x-U9QYdHuq2HKLloF9px" 
@@ -73,7 +73,7 @@ const COURSES_DATA = [
     id: 3, 
     title: "Kindergarten Learning Videos", 
     description: "A collection of videos to prepare children for kindergarten, covering a range of essential skills.", 
-    students: 475, 
+    students: 675, 
     level: "Beginner",
     duration: "29 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE06s9Qp4CjchN7DY6rvY3cmT" 
@@ -82,7 +82,7 @@ const COURSES_DATA = [
     id: 4, 
     title: "Learn Social Skills for Children", 
     description: "Videos that teach important social skills to children, helping them interact better with others.", 
-    students: 540, 
+    students: 840, 
     level: "Intermediate",
     duration: "12 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE06v5R6KCVPZjkkOEv7P82XS" 
@@ -91,7 +91,7 @@ const COURSES_DATA = [
     id: 5, 
     title: "Counting Videos for Kids", 
     description: "Fun and interactive videos to help young children learn how to count.", 
-    students: 405, 
+    students: 605, 
     level: "Beginner",
     duration: "13 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE04j-qu-nt2NM_cj1DRJvSs9" 
@@ -100,7 +100,7 @@ const COURSES_DATA = [
     id: 6, 
     title: "Life of Shapes", 
     description: "A creative series of videos that brings shapes to life, teaching geometry in a unique way.", 
-    students: 350, 
+    students: 950, 
     level: "Intermediate",
     duration: "31 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE04VOjKg4z1-I0RX7xxk7qX4" 
@@ -109,7 +109,7 @@ const COURSES_DATA = [
     id: 7, 
     title: "Shapes and Colors for Children Playlist", 
     description: "A vibrant playlist to help children learn about different shapes and colors.", 
-    students: 305, 
+    students: 1005, 
     level: "Beginner",
     duration: "22 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE06exWzAzzXsh38HjkJxy4uK" 
