@@ -14,17 +14,15 @@ import img9 from "../assets/hopeframes/i11.jpg";
 import img10 from "../assets/hopeframes/i13.jpg";
 
 function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
-    const [isPlaying, setIsPlaying] = useState(false);
     const [timeLeft, setTimeLeft] = useState({
         days: 15, hours: 0, minutes: 0, seconds: 0
     });
-
 
     const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
 
     useEffect(() => {
         const endTime = new Date();
-        endTime.setDate(endTime.getDate() + 2);
+        endTime.setDate(endTime.getDate() + 15); // Set timer to 15 days
 
         const timer = setInterval(() => {
             const now = new Date();
@@ -50,7 +48,6 @@ function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
     const [hoveredCard, setHoveredCard] = useState(null);
     const [hoveredButton, setHoveredButton] = useState(null);
     const [thumbnailHovered, setThumbnailHovered] = useState(false);
-    const [hoveredStat, setHoveredStat] = useState(null);
 
     const handleResourceClick = (type) => {
         switch (type) {
@@ -166,7 +163,7 @@ function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
             <div className="fixed bottom-[10%] right-[-8%] w-96 h-96 bg-gradient-to-br from-orange-500/15 to-pink-500/15 rounded-full blur-[4rem] animate-float-delayed pointer-events-none z-0" />
             <div className="fixed top-[60%] left-[80%] w-64 h-64 bg-gradient-to-br from-emerald-500/10 to-blue-500/10 rounded-full blur-[3rem] animate-float-short pointer-events-none z-0" />
 
-            {/* Hero YouTube Section */}
+            {/* Hero YouTube Thumbnail Section */}
             <section className="relative py-8 px-4 text-center overflow-hidden">
                 <div className="relative z-10 max-w-7xl mx-auto">
                     {/* Title */}
@@ -177,7 +174,7 @@ function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
                         <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-red-600 rounded-full mx-auto shadow-lg shadow-orange-500/30" />
                     </div>
 
-                    {/* Video Section */}
+                    {/* Video Thumbnail Section - Always shows thumbnail */}
                     <div className="relative max-w-5xl mx-auto animate-slide-up">
                         <div
                             className={`bg-glass border-2 border-white/20 rounded-3xl overflow-hidden transition-all duration-500 ease-out ${
@@ -188,56 +185,53 @@ function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
                             onMouseEnter={() => setHoveredImage('video')}
                             onMouseLeave={() => setHoveredImage(null)}
                         >
-                            {!isPlaying ? (
-                                <div
-                                    className={`relative aspect-video cursor-pointer bg-gradient-to-br from-blue-500/10 to-orange-500/10 transition-all duration-500 overflow-hidden ${
-                                        thumbnailHovered ? "scale-[1.02]" : "scale-100"
-                                    }`}
-                                    onClick={() => setIsPlaying(true)}
-                                    onMouseEnter={() => setThumbnailHovered(true)}
-                                    onMouseLeave={() => setThumbnailHovered(false)}
-                                >
-                                    {/* Video thumbnail overlay */}
-                                    <div className={`absolute inset-0 transition-all duration-300 ${
-                                        thumbnailHovered
-                                            ? 'bg-gradient-to-br from-blue-500/30 to-orange-500/30'
-                                            : 'bg-gradient-to-br from-blue-500/20 to-orange-500/20'
-                                    }`} />
-                                    
-                                    {/* Play button */}
-                                    <div className={`absolute top-1/2 left-1/2 transition-transform duration-300 ${
-                                        thumbnailHovered ? "-translate-x-1/2 -translate-y-1/2 scale-110" : "-translate-x-1/2 -translate-y-1/2"
-                                    }`}>
-                                        <div className="bg-gradient-orange text-white p-6 md:p-8 rounded-full animate-pulse-play border-6 border-white/40 flex items-center justify-center backdrop-blur-sm">
-                                            <Play size={36} fill="currentColor" className="ml-1 md:w-14 md:h-14" />
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Video info overlay */}
-                                    <div className={`absolute bottom-8 left-8 right-8 bg-black/70 backdrop-blur-sm rounded-2xl p-4 text-white transition-all duration-300 ${
-                                        thumbnailHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-                                    }`}>
-                                        <div className="flex items-center gap-2 text-sm font-medium">
-                                            <Play size={16} />
-                                            Click to watch our inspirational story
-                                        </div>
+                            <div
+                                className={`relative aspect-video cursor-pointer bg-gradient-to-br from-blue-500/10 to-orange-500/10 transition-all duration-500 overflow-hidden ${
+                                    thumbnailHovered ? "scale-[1.02]" : "scale-100"
+                                }`}
+                                onClick={() => window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank')}
+                                onMouseEnter={() => setThumbnailHovered(true)}
+                                onMouseLeave={() => setThumbnailHovered(false)}
+                            >
+                                {/* YouTube thumbnail image */}
+                                <img 
+                                    src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                                    alt="Video Thumbnail"
+                                    className="w-full h-full object-cover"
+                                />
+                                
+                                {/* Video thumbnail overlay */}
+                                <div className={`absolute inset-0 transition-all duration-300 ${
+                                    thumbnailHovered
+                                        ? 'bg-gradient-to-br from-blue-500/30 to-orange-500/30'
+                                        : 'bg-gradient-to-br from-blue-500/20 to-orange-500/20'
+                                }`} />
+                                
+                                {/* Play button */}
+                                <div className={`absolute top-1/2 left-1/2 transition-transform duration-300 ${
+                                    thumbnailHovered ? "-translate-x-1/2 -translate-y-1/2 scale-110" : "-translate-x-1/2 -translate-y-1/2"
+                                }`}>
+                                    <div className="bg-gradient-orange text-white p-6 md:p-8 rounded-full animate-pulse-play border-6 border-white/40 flex items-center justify-center backdrop-blur-sm">
+                                        <Play size={36} fill="currentColor" className="ml-1 md:w-14 md:h-14" />
                                     </div>
                                 </div>
-                            ) : (
-                                <iframe
-                                    className="w-full aspect-video border-0"
-                                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-                                    title="YouTube video player"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                />
-                            )}
+                                
+                                {/* Video info overlay */}
+                                <div className={`absolute bottom-8 left-8 right-8 bg-black/70 backdrop-blur-sm rounded-2xl p-4 text-white transition-all duration-300 ${
+                                    thumbnailHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+                                }`}>
+                                    <div className="flex items-center gap-2 text-sm font-medium">
+                                        <Play size={16} />
+                                        Click to watch on YouTube
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Countdown Section */}
+            {/* Countdown Section - 15 Days Timer */}
             <div className="flex justify-center items-center min-h-[48vh] py-8">
                 <section className="max-w-[90%] rounded-3xl py-8 md:py-12 px-0 md:px-16 bg-gradient-to-b from-blue-300/40 to-orange-200/40 animate-scale-in">
                     <div
@@ -456,7 +450,7 @@ function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
 
                         {/* CTA Button */}
                         <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                            <a href="https://www.paypal.com/donate/?hosted_button_id=7QRRA68W82CF4" target="\blank"
+                            <a href="https://www.paypal.com/donate/?hosted_button_id=7QRRA68W82CF4" target="_blank"
                                 className={`flex items-center justify-center gap-3 bg-gradient-orange text-white py-4 md:py-5 px-8 md:px-10 rounded-2xl font-bold text-lg md:text-xl transition-all duration-300 cursor-pointer border-0 min-w-60 md:min-w-0 max-w-80 md:max-w-none ${
                                     hoveredButton === 'primary' ? 'scale-105 -translate-y-1 shadow-2xl shadow-black/30' : 'scale-100 translate-y-0 shadow-lg shadow-black/20'
                                 }`}
