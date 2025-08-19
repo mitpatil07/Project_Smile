@@ -15,49 +15,23 @@ import img10 from "../assets/hopeframes/i13.jpg";
 
 function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
     const [timeLeft, setTimeLeft] = useState({
-        days: 14, hours: 22, minutes: 44, seconds: 0
+        days: 15, hours: 0, minutes: 0, seconds: 0
     });
 
     const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
 
     useEffect(() => {
-        // Create a function to get or create the end time
-        const getEndTime = () => {
-            // Try to get existing end time from component state or create a new one
-            const storedEndTime = sessionStorage.getItem('eventEndTime');
-            
-            if (storedEndTime) {
-                const endTime = new Date(storedEndTime);
-                // Check if the stored time is still in the future
-                if (endTime > new Date()) {
-                    return endTime;
-                }
-            }
-            
-            // Create new end time (14 days, 22 hours, 44 minutes from now)
-            const newEndTime = new Date();
-            const totalMilliseconds = (14 * 24 * 60 * 60 * 1000) + // 14 days in milliseconds
-                                    (22 * 60 * 60 * 1000) +        // 22 hours in milliseconds  
-                                    (44 * 60 * 1000);              // 44 minutes in milliseconds
-            newEndTime.setTime(newEndTime.getTime() + totalMilliseconds);
-            
-            // Store it for persistence across page reloads
-            sessionStorage.setItem('eventEndTime', newEndTime.toISOString());
-            
-            return newEndTime;
-        };
-
-        const endTime = getEndTime();
-
+        // FIXED EVENT DATE - This is your exact target date
+        // Set to show 12 days, 22 hours, 38 minutes, 21 seconds from August 19, 2025
+        const FIXED_EVENT_DATE = new Date('2025-09-01 18:38:21'); // September 1, 2025 at 6:38:21 PM
+        
         const timer = setInterval(() => {
             const now = new Date();
-            const diff = endTime - now;
+            const diff = FIXED_EVENT_DATE - now;
 
             if (diff <= 0) {
                 clearInterval(timer);
                 setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-                // Clear the stored end time when timer reaches zero
-                sessionStorage.removeItem('eventEndTime');
             } else {
                 setTimeLeft({
                     days: Math.floor(diff / (1000 * 60 * 60 * 24)),
@@ -67,6 +41,18 @@ function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
                 });
             }
         }, 1000);
+
+        // Calculate initial time immediately
+        const now = new Date();
+        const diff = FIXED_EVENT_DATE - now;
+        if (diff > 0) {
+            setTimeLeft({
+                days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+                minutes: Math.floor((diff / (1000 * 60)) % 60),
+                seconds: Math.floor((diff / 1000) % 60)
+            });
+        }
 
         return () => clearInterval(timer);
     }, []);

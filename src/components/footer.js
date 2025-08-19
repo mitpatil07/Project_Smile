@@ -1,5 +1,5 @@
 import React from "react";
-import { Twitter, Facebook, Instagram, Heart } from "lucide-react";
+import { Twitter, Facebook, Instagram, Heart , X} from "lucide-react";
 
 const FOOTER_CONFIG = {
   brand: {
@@ -16,9 +16,9 @@ const FOOTER_CONFIG = {
   ],
   social: [
     {
-      name: "Twitter",
-      icon: Twitter,
-      url: "https://twitter.com/joemittiga",
+      name: "X",
+      icon: X,
+      url: "https://x.com/mittiga95743",
       hoverColor: "hover:bg-blue-500"
     },
     {
