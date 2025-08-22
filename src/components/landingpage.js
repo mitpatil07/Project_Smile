@@ -53,7 +53,7 @@ const LandingPage = () => {
                   boxShadow: '0 8px 30px rgba(255, 107, 0, 0.4), 0 4px 15px rgba(0, 0, 0, 0.3)'
                 }}
               >
-                <span className="relative z-10">Join The Live Stream</span>
+                <span className="relative z-10"> <a href='https://www.youtube.com/watch?v=-BmRP--B_j8' target='\blank'>  Join The Live Stream</a></span>
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </a>
             </div>

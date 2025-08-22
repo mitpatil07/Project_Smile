@@ -148,6 +148,26 @@ const Footer = () => {
           <div className="h-px w-20 sm:w-32 bg-gradient-to-l from-transparent to-white/50"></div>
         </div>
         
+        {/* Shop & Support Section */}
+        <div className="text-center mb-8">
+          <div className="inline-flex flex-col items-center">
+            <p className="text-white/80 text-sm mb-4 font-medium">
+              Support our mission by shopping through our affiliate store
+            </p>
+            <a
+              href="https://www.ProjectSmile.fund"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full text-white font-bold text-lg transition-all duration-300 hover:from-orange-400 hover:to-orange-500 hover:scale-105 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/30 border-2 border-orange-400/50 overflow-hidden"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+              <span className="relative flex items-center gap-3">
+                🛒 Shop & Support
+              </span>
+            </a>
+          </div>
+        </div>
+
         {/* Bottom Section */}
         <div className="text-center">
           <p className="text-white/70 text-sm font-medium">
