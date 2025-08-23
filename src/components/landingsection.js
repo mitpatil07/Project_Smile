@@ -12,13 +12,14 @@ import img7 from "../assets/hopeframes/i17.jpg";
 import img8 from "../assets/hopeframes/i18.jpg";
 import img9 from "../assets/hopeframes/i11.jpg";
 import img10 from "../assets/hopeframes/i13.jpg";
+import img11 from "../assets/hopeframes/img.jpg"
 
 function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
     const [timeLeft, setTimeLeft] = useState({
         days: 15, hours: 0, minutes: 0, seconds: 0
     });
 
-    const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
+    const images = [img11, img2, img3, img4, img5, img6, img7, img8, img9, img10, img1];
 
     useEffect(() => {
         // FIXED EVENT DATE - This is your exact target date

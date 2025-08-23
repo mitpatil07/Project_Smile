@@ -30,11 +30,11 @@ const AboutPage = () => {
   }, []);
 
   const socialLinks = [
-    { icon: Facebook, url: "https://www.facebook.com/people/Joe-Mittiga/61574825025092/", label: "Facebook", color: "#1877f2" },
-    { icon: Instagram, url: "https://www.instagram.com/joemittiga2", label: "Instagram", color: "#e4405f" },
-    { icon: X, url: "https://x.com/mittiga95743", label: "X", color: "#1da1f2" },
-    { icon: Linkedin, url: "https://www.linkedin.com/in/joemittiga/", label: "LinkedIn", color: "#0077b5" },
     { icon: Youtube, url: "https://www.youtube.com/@JoeMittiga", label: "YouTube", color: "#ff0000" },
+    { icon: Instagram, url: "https://www.instagram.com/joemittiga2", label: "Instagram", color: "#e4405f" },
+    { icon: Linkedin, url: "https://www.linkedin.com/in/joemittiga/", label: "LinkedIn", color: "#0077b5" },
+    { icon: Facebook, url: "https://www.facebook.com/people/Joe-Mittiga/61574825025092/", label: "Facebook", color: "#1877f2" },
+    { icon: X, url: "https://x.com/mittiga95743", label: "X", color: "#1da1f2" },
     { icon: Mail, url: "https://mail.google.com/mail/u/0/?fs=1&to=Joe@JoeMittiga.com&tf=cm", label: "Website", color: "#6366f1" }
   ];
 

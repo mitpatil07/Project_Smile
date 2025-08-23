@@ -55,7 +55,7 @@ const COURSES_DATA = [
     id: 1, 
     title: "1st and 2nd Grade Educational Videos", 
     description: "A curated playlist of fun and educational videos for children in 1st and 2nd grade.", 
-    students: 890, 
+    students: 895, 
     level: "Beginner",
     duration: "7 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE05_C8bL0CHQ351oTG5AvRhe" 
@@ -64,7 +64,7 @@ const COURSES_DATA = [
     id: 2, 
     title: "PreSchool Learning Videos", 
     description: "Engaging videos designed to help preschoolers learn basic concepts in an enjoyable way.", 
-    students: 750, 
+    students: 757, 
     level: "Beginner",
     duration: "13 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE044x-U9QYdHuq2HKLloF9px" 
@@ -82,7 +82,7 @@ const COURSES_DATA = [
     id: 4, 
     title: "Learn Social Skills for Children", 
     description: "Videos that teach important social skills to children, helping them interact better with others.", 
-    students: 840, 
+    students: 860, 
     level: "Intermediate",
     duration: "12 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE06v5R6KCVPZjkkOEv7P82XS" 
@@ -91,7 +91,7 @@ const COURSES_DATA = [
     id: 5, 
     title: "Counting Videos for Kids", 
     description: "Fun and interactive videos to help young children learn how to count.", 
-    students: 605, 
+    students: 635, 
     level: "Beginner",
     duration: "13 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE04j-qu-nt2NM_cj1DRJvSs9" 
@@ -100,7 +100,7 @@ const COURSES_DATA = [
     id: 6, 
     title: "Life of Shapes", 
     description: "A creative series of videos that brings shapes to life, teaching geometry in a unique way.", 
-    students: 950, 
+    students: 1001, 
     level: "Intermediate",
     duration: "31 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE04VOjKg4z1-I0RX7xxk7qX4" 
@@ -109,7 +109,7 @@ const COURSES_DATA = [
     id: 7, 
     title: "Shapes and Colors for Children Playlist", 
     description: "A vibrant playlist to help children learn about different shapes and colors.", 
-    students: 1005, 
+    students: 1015, 
     level: "Beginner",
     duration: "22 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE06exWzAzzXsh38HjkJxy4uK" 
@@ -120,6 +120,7 @@ const EducationalResources = () => {
   const [bookmarkedCourses, setBookmarkedCourses] = useState(new Set());
   const [thumbnails, setThumbnails] = useState({});
   const [filter, setFilter] = useState('all');
+  const visitorCount = 0;
 
   useEffect(() => {
     COURSES_DATA.forEach(course => {
@@ -206,8 +207,20 @@ const EducationalResources = () => {
         </div>
 
         {/* Khan Academy Banner */}
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 mb-12 overflow-hidden hover:shadow-2xl transition-all duration-500">
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 mb-12 overflow-hidden hover:shadow-2xl transition-all duration-500 relative">
           <div className="h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+          
+          {/* Viewer count positioned in top-right */}
+          <div className="absolute top-4 right-6 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1">
+            <span className="inline-flex items-center gap-1.5 text-white text-xs font-medium">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"/>
+              </svg>
+              {visitorCount} viewers
+            </span>
+          </div>
+          
           <div className="p-6 sm:p-8">
             <div className="flex flex-col lg:flex-row items-center gap-6">
               <div className="flex-shrink-0">
