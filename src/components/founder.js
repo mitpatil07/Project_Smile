@@ -45,7 +45,7 @@ const AboutPage = () => {
       cover: bookCover,
       downloadLink: "https://drive.google.com/file/d/1TaGvzdEcFceDRK-as07JQsglsy3xlt5K/view",
       supportLink: "https://www.amazon.com/Healing-Addiction-Inner-Child-Break/dp/1963701496",
-      downloadCount: "456",
+      downloadCount: "566",
       isComingSoon: false
     },
     {
