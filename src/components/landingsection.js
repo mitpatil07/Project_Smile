@@ -14,7 +14,7 @@ import img9 from "../assets/hopeframes/i11.jpg";
 import img10 from "../assets/hopeframes/i13.jpg";
 import img11 from "../assets/hopeframes/img.jpg"
 
-function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
+function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
     const [timeLeft, setTimeLeft] = useState({
         days: 15, hours: 0, minutes: 0, seconds: 0
     });
@@ -24,7 +24,7 @@ function YouTubeSection({ videoId = "-BmRP--B_j8" }) {
     useEffect(() => {
         // FIXED EVENT DATE - This is your exact target date
         // Set to show 12 days, 22 hours, 38 minutes, 21 seconds from August 19, 2025
-        const FIXED_EVENT_DATE = new Date('2025-09-01 18:38:21'); // September 1, 2025 at 6:38:21 PM
+        const FIXED_EVENT_DATE = new Date('2025-09-15 16:40:00'); // September 1, 2025 at 6:38:21 PM
         
         const timer = setInterval(() => {
             const now = new Date();
