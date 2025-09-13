@@ -78,6 +78,9 @@ import video52 from "../assets/hopeframes/v52.mp4";
 import video53 from "../assets/hopeframes/v53.mp4";
 import video54 from "../assets/hopeframes/v54.mp4";
 import video55 from "../assets/hopeframes/v55.mp4";
+import video56 from "../assets/hopeframes/v56.mp4";
+import video57 from "../assets/hopeframes/v57.mp4";
+import video58 from "../assets/hopeframes/v58.mp4";
 
 const MediaGallery = () => {
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -163,7 +166,10 @@ const MediaGallery = () => {
     { id: 71, type: 'video', src: video52 },
     { id: 72, type: 'video', src: video53 },
     { id: 73, type: 'video', src: video54 },
-    { id: 74, type: 'video', src: video55 }
+    { id: 74, type: 'video', src: video55 },
+    { id: 75, type: 'video', src: video56 },
+    { id: 76, type: 'video', src: video57 },
+    { id: 77, type: 'video', src: video58 }
   ];
 
   const filteredMedia = mediaFiles.filter(media => {
