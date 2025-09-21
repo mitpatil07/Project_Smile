@@ -3,42 +3,42 @@ import { Heart, BookOpen, Star, Sparkles, Clock, Lightbulb, Rocket, Target, Exte
 
 const BookSection = () => {
   const [donationBooks, setDonationBooks] = useState([
-    { 
-      id: 1, 
-      title: "Book Name", 
-      author: "DonorBook", 
-      age: "5-8 years", 
-      genre: "Fantasy",
-      coverImage: "https://picsum.photos/seed/magic-garden/200/280",
-      donationLink: "https://www.firstbook.org/"
-    },
-    { 
-      id: 2, 
-      title: "Book Name", 
-      author: "Donor Name", 
-      age: "6-10 years", 
-      genre: "Sci-Fi",
-      coverImage: "https://picsum.photos/seed/space-adventure/200/280",
-      donationLink: "https://www.reachoutandread.org/"
-    },
-    { 
-      id: 3, 
-      title: "Book Name", 
-      author: "Donor Name", 
-      age: "4-7 years", 
-      genre: "Social Skills",
-      coverImage: "https://picsum.photos/seed/friendship/200/280",
-      donationLink: "https://www.unitedway.org/"
-    },
-    { 
-      id: 4, 
-      title: "Book Name", 
-      author: "Donor Name", 
-      age: "7-11 years", 
-      genre: "Educational",
-      coverImage: "https://picsum.photos/seed/ocean-mysteries/200/280",
-      donationLink: "https://www.berniespagereads.org/"
-    }
+    // { 
+    //   id: 1, 
+    //   title: "Book Name", 
+    //   author: "DonorBook", 
+    //   age: "5-8 years", 
+    //   genre: "Fantasy",
+    //   coverImage: "https://picsum.photos/seed/magic-garden/200/280",
+    //   donationLink: "https://www.firstbook.org/"
+    // },
+    // { 
+    //   id: 2, 
+    //   title: "Book Name", 
+    //   author: "Donor Name", 
+    //   age: "6-10 years", 
+    //   genre: "Sci-Fi",
+    //   coverImage: "https://picsum.photos/seed/space-adventure/200/280",
+    //   donationLink: "https://www.reachoutandread.org/"
+    // },
+    // { 
+    //   id: 3, 
+    //   title: "Book Name", 
+    //   author: "Donor Name", 
+    //   age: "4-7 years", 
+    //   genre: "Social Skills",
+    //   coverImage: "https://picsum.photos/seed/friendship/200/280",
+    //   donationLink: "https://www.unitedway.org/"
+    // },
+    // { 
+    //   id: 4, 
+    //   title: "Book Name", 
+    //   author: "Donor Name", 
+    //   age: "7-11 years", 
+    //   genre: "Educational",
+    //   coverImage: "https://picsum.photos/seed/ocean-mysteries/200/280",
+    //   donationLink: "https://www.berniespagereads.org/"
+    // }
   ]);
 
   const [editingBook, setEditingBook] = useState(null);
