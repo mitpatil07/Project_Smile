@@ -120,7 +120,7 @@ const EducationalResources = () => {
   const [bookmarkedCourses, setBookmarkedCourses] = useState(new Set());
   const [thumbnails, setThumbnails] = useState({});
   const [filter, setFilter] = useState('all');
-  const visitorCount = 89;
+  const visitorCount = 206;
 
   useEffect(() => {
     COURSES_DATA.forEach(course => {
