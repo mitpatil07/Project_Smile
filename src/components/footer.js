@@ -38,7 +38,7 @@ const FOOTER_CONFIG = {
     text: "Join The Mission",
     url: "https://www.paypal.com/donate/?hosted_button_id=7QRRA68W82CF4"
   },
-  copyright: "© 2025 Smile Foundation. All Rights Reserved"
+  copyright: "© 2025 Project Smile Foundation. All Rights Reserved"
 };
 
 const Footer = () => {

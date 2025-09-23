@@ -120,7 +120,8 @@ const EducationalResources = () => {
   const [bookmarkedCourses, setBookmarkedCourses] = useState(new Set());
   const [thumbnails, setThumbnails] = useState({});
   const [filter, setFilter] = useState('all');
-  const visitorCount = 89;
+  const [isHovered, setIsHovered] = useState(false);
+  const visitorCount = 289;
 
   useEffect(() => {
     COURSES_DATA.forEach(course => {
@@ -206,61 +207,127 @@ const EducationalResources = () => {
           </div>
         </div>
 
-        {/* Khan Academy Banner */}
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 mb-12 overflow-hidden hover:shadow-2xl transition-all duration-500 relative">
-          <div className="h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+
+        {/* Interactive Banner */}      
+    <div className="p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 mb-12">
+      <div 
+        className="relative max-w-6xl mx-auto"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Floating background elements - responsive sizes */}
+        <div className="absolute -top-2 -left-2 sm:-top-4 sm:-left-4 w-48 h-48 sm:w-72 sm:h-72 bg-blue-200/20 rounded-full blur-2xl sm:blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-4 -right-4 sm:-bottom-8 sm:-right-8 w-64 h-64 sm:w-96 sm:h-96 bg-purple-200/20 rounded-full blur-2xl sm:blur-3xl animate-pulse delay-1000"></div>
+        
+        {/* Main banner */}
+        <div className={`
+          relative bg-white/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-white/20 
+          overflow-hidden transition-all duration-700 ease-out
+          ${isHovered ? 'sm:shadow-4xl sm:scale-[1.02] sm:-translate-y-2' : ''}
+        `}>
           
-          {/* Viewer count positioned in top-right */}
-          <div className="absolute top-4 right-6 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1">
-            <span className="inline-flex items-center gap-1.5 text-white text-xs font-medium">
-              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"/>
-              </svg>
-              {visitorCount} viewers
-            </span>
+          {/* Animated top gradient bar */}
+          <div className="h-1.5 sm:h-2 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 to-orange-500 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
+            <div className={`
+              absolute top-0 left-0 h-full w-full bg-gradient-to-r from-blue-400 to-purple-400 
+              transform transition-transform duration-1000 ease-in-out
+              ${isHovered ? 'translate-x-full' : '-translate-x-full'}
+            `}></div>
           </div>
           
-          <div className="p-6 sm:p-8">
-            <div className="flex flex-col lg:flex-row items-center gap-6">
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <span className="text-2xl">🎓</span>
+          {/* Viewer count with responsive positioning */}
+          <div className="absolute top-3 right-3 sm:top-6 sm:right-6 z-10">
+            <div className="bg-gradient-to-r from-gray-900/80 to-black/80 backdrop-blur-md rounded-xl sm:rounded-2xl px-2.5 py-1.5 sm:px-4 sm:py-2.5 shadow-lg sm:shadow-xl border border-white/10">
+              <span className="inline-flex items-center gap-1.5 sm:gap-2 text-white text-xs sm:text-sm font-semibold">
+                <div className="relative">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                    <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"/>
+                  </svg>
                 </div>
-              </div>
+                <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent font-bold">
+                  {visitorCount.toLocaleString()}
+                </span>
+              </span>
+            </div>
+          </div>
+          
+          <div className="p-4 sm:p-6 md:p-8 lg:p-12">
+            <div className="flex flex-col items-center gap-6 sm:gap-8">
               
-              <div className="flex-1 text-center lg:text-left">
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                  Learn with Khan Academy
+              {/* Content section */}
+              <div className="w-full text-center relative">
+                
+                {/* Main title with responsive typography */}
+                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 sm:mb-4 leading-tight">
+                  <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    Learn with
+                  </span>
+                  <br />
+                  <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                    Khan Academy
+                  </span>
                 </h3>
-                <p className="text-gray-600 leading-relaxed mb-4">
-                  Khan Academy provides a free, world-class education for anyone, anywhere. 
+                
+                {/* Description with responsive text size */}
+                <p className="text-gray-700 leading-relaxed text-center text-sm sm:text-base md:text-lg mb-4 sm:mb-6 max-w-2xl mx-auto px-2 sm:px-0">
+                  Khan Academy provides a <span className="font-semibold text-blue-600">free, world-class education</span> for anyone, anywhere.
                   It offers practice exercises, instructional videos, and a personalized learning dashboard.
                 </p>
                 
-                <div className="flex flex-col sm:flex-row items-center gap-3">
-                  <button 
+                {/* Action area with responsive button */}
+                <div className="flex justify-center mb-4 sm:mb-6">
+                  <button
                     onClick={() => window.open('https://www.khanacademy.org/', '_blank')}
-                    className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-6 py-2.5 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                    className={`
+                      group relative px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500
+                      hover:from-orange-600 hover:via-red-600 hover:to-pink-600
+                      text-white font-bold rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl
+                      transform transition-all duration-300 ease-out
+                      hover:scale-105 hover:-translate-y-1 hover:shadow-2xl
+                      active:scale-95 w-full sm:w-auto max-w-xs sm:max-w-none
+                    `}
                   >
-                    Explore Khan Academy
+                    <span className="relative z-10 flex items-center justify-center gap-2 text-sm sm:text-base">
+                      Explore Khan Academy
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </span>
+                    
+                    {/* Button glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-pink-400 rounded-xl sm:rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
                   </button>
-                  
-                  <div className="flex items-center gap-3">
-                    <span className="inline-flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full text-sm font-medium text-gray-700">
-                      <span className="text-green-500">✓</span>
+                </div>
+                
+                {/* Feature badges with responsive layout */}
+                <div className="pt-3 sm:pt-4 border-t border-gray-100">
+                  <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2 sm:gap-3">
+                    <span className="inline-flex items-center gap-2 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold text-green-700 shadow-sm hover:shadow-md transition-shadow duration-300 w-full sm:w-auto justify-center sm:justify-start">
+                      <span className="text-green-500 text-base sm:text-lg">✓</span>
                       Free Access
                     </span>
-                    <span className="inline-flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full text-sm font-medium text-gray-700">
-                      <span className="text-blue-500">🌍</span>
+                    <span className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold text-blue-700 shadow-sm hover:shadow-md transition-shadow duration-300 w-full sm:w-auto justify-center sm:justify-start">
+                      <span className="text-blue-500 text-base sm:text-lg">🌍</span>
                       World-class
+                    </span>
+                    <span className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold text-purple-700 shadow-sm hover:shadow-md transition-shadow duration-300 w-full sm:w-auto justify-center sm:justify-start">
+                      <span className="text-purple-500 text-base sm:text-lg">🎯</span>
+                      Personalized
                     </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          
+          {/* Bottom decoration */}
+          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
         </div>
+      </div>
+      </div>
+
 
         {/* Filter Section */}
         <div className="mb-8">

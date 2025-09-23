@@ -13,6 +13,8 @@ import Contact from "./components/Contact_Us";
 import Smile from "./components/Smiles"; 
 import Hopeframe from "./components/HopeFrames"
 import ScrollToTop from "./components/ScrollToTop";
+import Legacyposts from "./components/Legacyposts";
+
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
         <Route path="/contact" element={<Contact />} /> 
         <Route path="/smiles" element={<Smile />} />
         <Route path="/Hopeframe" element={<Hopeframe />} />
+        <Route path="/Legacyposts" element={<Legacyposts />} />
+
 
       </Routes>
 
