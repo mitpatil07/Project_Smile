@@ -230,7 +230,7 @@ const BookSection = () => {
                           e.target.nextSibling.style.display = 'flex';
                         }}
                       />
-                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-blue-700 absolute inset-0 flex flex-col items-center justify-center text-white text-xs font-bold text-center p-2 hidden">
+                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-blue-700 absolute inset-0 flex-col items-center justify-center text-white text-xs font-bold text-center p-2 hidden">
                         <div className="text-xs leading-tight">{book.title}</div>
                         <div className="text-xs opacity-80 mt-1">{book.author}</div>
                       </div>
