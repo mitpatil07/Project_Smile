@@ -120,12 +120,8 @@ const EducationalResources = () => {
   const [bookmarkedCourses, setBookmarkedCourses] = useState(new Set());
   const [thumbnails, setThumbnails] = useState({});
   const [filter, setFilter] = useState('all');
-<<<<<<< HEAD
   const [isHovered, setIsHovered] = useState(false);
   const visitorCount = 289;
-=======
-  const visitorCount = 206;
->>>>>>> 75cc39e49dcabc2a8cca4f1320a6afb17262f4d0
 
   useEffect(() => {
     COURSES_DATA.forEach(course => {
