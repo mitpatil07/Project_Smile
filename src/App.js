@@ -14,6 +14,7 @@ import Smile from "./components/Smiles";
 import Hopeframe from "./components/HopeFrames"
 import ScrollToTop from "./components/ScrollToTop";
 import Legacyposts from "./components/Legacyposts";
+import LanguageHub from "./components/language-hub";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/founder" element={<Founder />} />
         <Route path="/ebooks" element={<EBooks />} />
         <Route path="/training" element={<Training />} />
+        <Route path="/language-hub" element={<LanguageHub />} />
         <Route path="/education" element={<Education />} />
         <Route path="/mindset" element={<Mindset />} />
         <Route path="/contact" element={<Contact />} /> 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import "../style/nav.css";
-import logo from "./smilelogo.png"; // Correct path to your logo
+import logo from "./smilelogo.png"; 
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,7 +51,7 @@ const Navbar = () => {
 
   return (
     <header className={`navbar-header ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="navbar-container">
+      <div className="navbar-container ">
         <nav className="navbar-nav">
 
           {/* Logo - positioned on left */}
@@ -101,6 +101,8 @@ const Navbar = () => {
                 Training
               </Link>
             </li>
+
+
             <li className="navbar-item">
               <Link
                 to="/education"
@@ -108,6 +110,15 @@ const Navbar = () => {
                 onClick={handleNavItemClick}
               >
                 Education
+              </Link>
+            </li>
+            <li className="navbar-item">
+              <Link
+                to="/language-hub"
+                className={`navbar-link ${isActiveLink('/language-hub') ? 'active' : ''}`}
+                onClick={handleNavItemClick}
+              >
+                Language Hub
               </Link>
             </li>
             <li className="navbar-item">
