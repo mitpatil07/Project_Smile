@@ -21,7 +21,7 @@ const courses = [
         students: "12,500+",
         image: img2,
         gradient: "bg-gradient-to-br from-orange-500 to-green-600",
-        courseUrl: "/courses/hindi-english"
+        courseUrl: "https://drive.google.com/file/d/1QbJvIJF7RH4abhd6ka02F42aawm41Nae/view?usp=sharing"
     },
     {
         id: 2,
@@ -32,7 +32,7 @@ const courses = [
         students: "9,800+",
         image: img1,
         gradient: "bg-gradient-to-br from-green-600 to-emerald-700",
-        courseUrl: "/courses/urdu-english"
+        courseUrl: "https://drive.google.com/file/d/1tWRi30YEoapxvVfafh3qzd0gB3Thv8bJ/view?usp=sharing"
     },
     {
         id: 3,
@@ -43,7 +43,7 @@ const courses = [
         students: "15,200+",
         image: img3,
         gradient: "bg-gradient-to-br from-red-600 to-yellow-500",
-        courseUrl: "/courses/chinese-english"
+        courseUrl: "https://drive.google.com/file/d/13UrPW-0ZIEtenzV1XS_OENoVtTMFmgpk/view?usp=sharing"
     },
     {
         id: 4,
@@ -54,7 +54,7 @@ const courses = [
         students: "8,400+",
         image: img4,
         gradient: "bg-gradient-to-br from-yellow-500 to-red-500",
-        courseUrl: "/courses/spanish-english"
+        courseUrl: "https://drive.google.com/file/d/1iA6aTFivzYT7QazQ4ygoCGzCPxap7RkH/view?usp=sharing"
     },
     {
         id: 5,
@@ -65,15 +65,15 @@ const courses = [
         students: "11,300+",
         image: img5,
         gradient: "bg-gradient-to-br from-blue-600 to-purple-600",
-        courseUrl: "/courses/french-english"
+        courseUrl: "https://drive.google.com/file/d/19msRalxB2mm2IHQCAUqIL77K7K8RXstX/view?usp=sharing"
     },
 
 ];
 
 const handleCourseClick = (courseUrl) => {
-    console.log(`Navigating to: ${courseUrl}`);
-    alert(`Redirecting to course: ${courseUrl}\n\nIn production, this would navigate to your course page.`);
+    window.open(courseUrl, "_blank"); // opens in new tab
 };
+
 
 return (
     <div className="min-h-screen bg-gradient-to-br mt-5 from-slate-50 via-blue-50/40 to-orange-50/30 font-sans relative overflow-x-hidden">
