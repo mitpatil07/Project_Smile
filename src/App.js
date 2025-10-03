@@ -1,5 +1,5 @@
 import React from "react";
-import "../src/App.css"
+import "../src/App.css";
 import { Routes, Route } from "react-router-dom"; 
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
@@ -11,16 +11,20 @@ import Education from "./components/education";
 import Mindset from "./components/Mindset";
 import Contact from "./components/Contact_Us"; 
 import Smile from "./components/Smiles"; 
-import Hopeframe from "./components/HopeFrames"
+import Hopeframe from "./components/HopeFrames";
 import ScrollToTop from "./components/ScrollToTop";
 import Legacyposts from "./components/Legacyposts";
 import LanguageHub from "./components/language-hub";
 
+// import the hook
+import usePageTracking from "./hooks/usePageTracking";
 
 function App() {
+  // run tracking on every route change
+  usePageTracking();
+
   return (
     <div>
-      
       <ScrollToTop />
       <Navbar />
 
@@ -36,8 +40,6 @@ function App() {
         <Route path="/smiles" element={<Smile />} />
         <Route path="/Hopeframe" element={<Hopeframe />} />
         <Route path="/Legacyposts" element={<Legacyposts />} />
-
-
       </Routes>
 
       <Footer />
