@@ -40,7 +40,7 @@ const courses = [
         title: "Learn English for Chinese Speakers",
         desc: "Bridge the language gap with English lessons focusing on pronunciation, grammar, and practical communication.",
         level: "Beginner",
-        students: "82",
+        students: "22",
         image: img3,
         gradient: "bg-gradient-to-br from-red-600 to-yellow-500",
         courseUrl: "https://drive.google.com/file/d/13UrPW-0ZIEtenzV1XS_OENoVtTMFmgpk/view?usp=sharing"
