@@ -109,7 +109,7 @@ const COURSES_DATA = [
     id: 7, 
     title: "Shapes and Colors for Children Playlist", 
     description: "A vibrant playlist to help children learn about different shapes and colors.", 
-    students: 220, 
+    students: 1220, 
     level: "Beginner",
     duration: "22 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE06exWzAzzXsh38HjkJxy4uK" 
