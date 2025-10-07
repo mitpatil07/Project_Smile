@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { 
+import {
   Heart, Play, Download, ExternalLink, Mail, Star, Award, Users, BookOpen, ArrowRight, Share2,
   Facebook, Instagram, X, Linkedin, Youtube, Globe
 } from "lucide-react";
+import PodcastBanner from "./prodcast_comp";
 
 
 import bookCover from "../assets/founder/bookimg.png";
@@ -21,10 +22,10 @@ const AboutPage = () => {
       setIsMobile(window.innerWidth <= 768);
       setIsTablet(window.innerWidth <= 1024);
     };
-    
+
     // Set initial values
     handleResize();
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -40,20 +41,23 @@ const AboutPage = () => {
 
   const books = [
     {
+      title: "WE!: finding community connection in a divided world",
+      cover: bookcover2,
+      description: "We by Joe highlights humanity’s deep disconnection despite global connectivity. Rising loneliness, burnout, and mental illness stem from separation from self, others, and the Divine. The book invites readers to rediscover unity and live as “WE” embracing inner peace, purpose, and spiritual connection within.",
+      downloadLink: "https://drive.google.com/file/d/1IjzuZ9cSMCJppIK5hnkkFgrHwqDK0joG/view?usp=sharing",
+      downloadCount: "0",
+      isComingSoon: false
+    },
+    {
       title: "HEALING ADDICTION: A Journey to Reclaim Your Inner Child",
       description: "This book is not just words - it is a mirror. A mirror to see your hidden pain, buried memories, and the little child inside you who is still waiting to be seen, loved, and healed. In this raw and real journey, Joe Mittiga shares how he broke free from the chains of addiction, shame, and abandonment - not by facing the past, but by facing it with love. If you have ever felt lost, numb, unworthy, or unloved, this book will feel like a conversation with your soul.",
       cover: bookCover,
       downloadLink: "https://drive.google.com/file/d/1TaGvzdEcFceDRK-as07JQsglsy3xlt5K/view",
       supportLink: "https://www.amazon.com/Healing-Addiction-Inner-Child-Break/dp/1963701496",
-      downloadCount: "1245",
+      downloadCount: "1524",
       isComingSoon: false
     },
-    {
-      title: "WE!: finding community connection in a divided world",
-      cover: bookcover2,
-      downloadCount: "Coming Soon",
-      isComingSoon: true
-    },
+
   ];
 
   const videos = [
@@ -88,12 +92,12 @@ const AboutPage = () => {
       } else {
         const textToCopy = `${video.title}\nWatch: https://www.youtube.com/watch?v=${video.videoId}`;
         await navigator.clipboard.writeText(textToCopy);
-        
+
         const notification = document.createElement('div');
         notification.textContent = 'Link copied to clipboard!';
         notification.className = 'fixed top-5 right-5 bg-green-500 text-white px-5 py-3 rounded-lg z-50 shadow-lg';
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
           if (document.body.contains(notification)) {
             document.body.removeChild(notification);
@@ -243,7 +247,7 @@ const AboutPage = () => {
           backdrop-filter: blur(15px);
         }
       `}</style>
-      
+
       <div className="font-sans leading-relaxed text-gray-800 overflow-x-hidden">
         {/* Hero Section */}
         <section className={`${isMobile ? 'min-h-screen mt-4 px-4' : 'min-h-screen mt-12'} bg-gradient-hero flex items-center relative overflow-hidden`}>
@@ -279,15 +283,15 @@ const AboutPage = () => {
                 <div className="inline-block bg-white bg-opacity-20 backdrop-blur-custom border border-white border-opacity-30 px-6 py-2 rounded-full text-sm font-semibold mb-4 md:mb-8 animate-slide-up-delay-200">
                   Global Speaker & Author
                 </div>
-                
+
                 <h1 className={`${isMobile ? 'text-4xl' : 'text-6xl'} font-bold leading-tight mb-6 bg-gradient-text animate-slide-up-delay-400`}>
                   Joe Mittiga
                 </h1>
-                
+
                 <p className={`${isMobile ? 'text-lg' : 'text-2xl'} font-semibold text-indigo-200 mb-4 animate-slide-up-delay-600`}>
                   Transformation Through Love
                 </p>
-                
+
                 <p className={`${isMobile ? 'text-base max-w-full' : 'text-lg max-w-lg'} text-indigo-300 leading-relaxed mb-8 animate-slide-up-delay-800 text-justify`}>
                   Heart-centered CEO, bestselling author, and global speaker dedicated to guiding others on the path of healing, self-discovery, and authentic transformation.
                 </p>
@@ -309,7 +313,7 @@ const AboutPage = () => {
                           title={social.label}
                           className="relative transition-all duration-300 ease-out transform hover:-translate-y-1 hover:scale-110"
                         >
-                          <div 
+                          <div
                             className={`${isMobile ? 'w-10 h-10' : 'w-12 h-12'} rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-300`}
                             style={{ backgroundColor: social.color }}
                           >
@@ -324,6 +328,8 @@ const AboutPage = () => {
             </div>
           </div>
         </section>
+
+        <PodcastBanner/>
 
         {/* Books Section */}
         <section className={`${isMobile ? 'py-5' : 'pt-10'}`}>
@@ -359,7 +365,7 @@ const AboutPage = () => {
                       <p className={`${isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-semibold mb-6`}>
                         Stay tuned for this upcoming release!
                       </p>
-                      
+
                       {/* Download Counter for Coming Soon */}
                       <div className={`flex items-center gap-2 ${isMobile ? 'justify-center' : 'justify-start'} text-gray-500`}>
                         <Download size={16} />
@@ -388,7 +394,7 @@ const AboutPage = () => {
                           Download Free
                         </a>
                       </div>
-                      
+
                       {/* Download Counter */}
                       <div className={`flex items-center gap-2 ${isMobile ? 'justify-center' : 'justify-start'} text-gray-600`}>
                         <Download size={16} />
@@ -443,7 +449,7 @@ const AboutPage = () => {
                         {video.title}
                       </h3>
                     </div>
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.preventDefault();
                         handleShare(video);
@@ -502,11 +508,10 @@ const AboutPage = () => {
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
-                    className={`flex items-center gap-3 ${isMobile ? 'px-4 py-2 text-sm' : 'px-6 py-3 text-base'} rounded-2xl font-semibold ${
-                      activeTab === tab.id 
-                        ? 'bg-blue-500 text-white shadow-lg transform scale-105' 
+                    className={`flex items-center gap-3 ${isMobile ? 'px-4 py-2 text-sm' : 'px-6 py-3 text-base'} rounded-2xl font-semibold ${activeTab === tab.id
+                        ? 'bg-blue-500 text-white shadow-lg transform scale-105'
                         : 'bg-gray-200 text-gray-500'
-                    } border-none cursor-pointer transition-all duration-300`}
+                      } border-none cursor-pointer transition-all duration-300`}
                     onClick={() => setActiveTab(tab.id)}
                   >
                     <tab.icon size={isMobile ? 16 : 20} />

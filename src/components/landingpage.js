@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import backgroundImage from "../assets/landingpage/bgimg.png";
 import Aftersection from "../components/landingsection"
-
+import NotificationEvent from './NotificationComponent';
 const LandingPage = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -74,7 +74,7 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-
+      <NotificationEvent />
       <Aftersection />
     </div>
   );
