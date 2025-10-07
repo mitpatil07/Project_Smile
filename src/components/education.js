@@ -64,7 +64,7 @@ const COURSES_DATA = [
     id: 2, 
     title: "PreSchool Learning Videos", 
     description: "Engaging videos designed to help preschoolers learn basic concepts in an enjoyable way.", 
-    students: 16582, 
+    students: 1652, 
     level: "Beginner",
     duration: "13 videos",
     link: "https://www.youtube.com/playlist?list=PLMsX9836rE044x-U9QYdHuq2HKLloF9px" 
