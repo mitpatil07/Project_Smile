@@ -45,7 +45,7 @@ const AboutPage = () => {
       cover: bookcover2,
       description: "We by Joe highlights humanity’s deep disconnection despite global connectivity. Rising loneliness, burnout, and mental illness stem from separation from self, others, and the Divine. The book invites readers to rediscover unity and live as “WE” embracing inner peace, purpose, and spiritual connection within.",
       downloadLink: "https://drive.google.com/file/d/1IjzuZ9cSMCJppIK5hnkkFgrHwqDK0joG/view?usp=sharing",
-      downloadCount: "0",
+      downloadCount: "117",
       isComingSoon: false
     },
     {
@@ -54,7 +54,7 @@ const AboutPage = () => {
       cover: bookCover,
       downloadLink: "https://drive.google.com/file/d/1TaGvzdEcFceDRK-as07JQsglsy3xlt5K/view",
       supportLink: "https://www.amazon.com/Healing-Addiction-Inner-Child-Break/dp/1963701496",
-      downloadCount: "1524",
+      downloadCount: "1785",
       isComingSoon: false
     },
 
