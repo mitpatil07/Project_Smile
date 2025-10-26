@@ -18,7 +18,7 @@ const courses = [
         title: "Learn English for Hindi Speakers",
         desc: "Master English with lessons designed specifically for Hindi speakers. Build vocabulary, grammar, and confidence.",
         level: "Beginner to Advanced",
-        students: "75",
+        students: "104",
         image: img2,
         gradient: "bg-gradient-to-br from-orange-500 to-green-600",
         courseUrl: "https://drive.google.com/file/d/1QbJvIJF7RH4abhd6ka02F42aawm41Nae/view?usp=sharing"
@@ -29,7 +29,7 @@ const courses = [
         title: "Learn English for Urdu Speakers",
         desc: "Comprehensive English course tailored for Urdu speakers with cultural context and practical examples.",
         level: "All Levels",
-        students: "49",
+        students: "98",
         image: img1,
         gradient: "bg-gradient-to-br from-green-600 to-emerald-700",
         courseUrl: "https://drive.google.com/file/d/1tWRi30YEoapxvVfafh3qzd0gB3Thv8bJ/view?usp=sharing"
@@ -40,7 +40,7 @@ const courses = [
         title: "Learn English for Chinese Speakers",
         desc: "Bridge the language gap with English lessons focusing on pronunciation, grammar, and practical communication.",
         level: "Beginner",
-        students: "29",
+        students: "45",
         image: img3,
         gradient: "bg-gradient-to-br from-red-600 to-yellow-500",
         courseUrl: "https://drive.google.com/file/d/13UrPW-0ZIEtenzV1XS_OENoVtTMFmgpk/view?usp=sharing"
@@ -51,7 +51,7 @@ const courses = [
         title: "Learn English for Spanish Speakers",
         desc: "Accelerate your English learning with courses designed to help Spanish speakers master English effectively.",
         level: "Intermediate",
-        students: "57",
+        students: "86",
         image: img4,
         gradient: "bg-gradient-to-br from-yellow-500 to-red-500",
         courseUrl: "https://drive.google.com/file/d/1iA6aTFivzYT7QazQ4ygoCGzCPxap7RkH/view?usp=sharing"
@@ -62,7 +62,7 @@ const courses = [
         title: "Learn English for French Speakers",
         desc: "Perfect your English with specialized lessons that address common challenges for French speakers.",
         level: "Beginner to Intermediate",
-        students: "28",
+        students: "37",
         image: img5,
         gradient: "bg-gradient-to-br from-blue-600 to-purple-600",
         courseUrl: "https://drive.google.com/file/d/19msRalxB2mm2IHQCAUqIL77K7K8RXstX/view?usp=sharing"
