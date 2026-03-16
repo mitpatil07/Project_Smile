@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, Bell, BellRing } from 'lucide-react';
 
 export default function NotificationEvent() {
   const [notifiedEvents, setNotifiedEvents] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: "Prodcast: WE!- finding community connection in a divided world",
-      description: "Welcome to 'We' by Joe a journey into the heart of human connection. In a world more linked than ever, we face rising loneliness, burnout, and disconnection from ourselves, each other, and the Divine.",
-      date: "November 2025",
-      type: "Prodcast",
-      status: "upcoming",
-      bannertitle: 'WE! Podcast',
-    },
-    {
-      id: 2,
-      title: "Episode 2: Finding Your Tribe",
-      description: "'We' by Joe explores humanity's growing disconnection amid global connectivity, revealing how loneliness and burnout arise from separation from self, others, and the Divine.",
-      date: "Coming Soon",
-      type: "New Book",
-      status: "Live",
-      bannertitle: 'WE! - Book',
-    },
-  ];
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/events');
+        if (res.ok) {
+          const data = await res.json();
+          // Take top 2 events
+          setUpcomingEvents(data.slice(0, 2));
+        }
+      } catch (err) {
+        console.error("Error fetching events:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const handleNotify = (eventId) => {
     if (notifiedEvents.includes(eventId)) {
@@ -32,6 +31,8 @@ export default function NotificationEvent() {
       setNotifiedEvents([...notifiedEvents, eventId]);
     }
   };
+
+  if (loading) return null;
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-6">
@@ -55,7 +56,7 @@ export default function NotificationEvent() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {upcomingEvents.map((event) => (
           <div
-            key={event.id}
+            key={event._id || event.id}
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all border border-gray-200"
           >
             {/* Card Header */}
@@ -85,7 +86,7 @@ export default function NotificationEvent() {
               <h3 className="text-base font-bold text-gray-900 mb-2 leading-snug">
                 {event.title}
               </h3>
-              
+
               <p className="text-xs md:text-sm text-gray-600 mb-3 text-justify leading-relaxed line-clamp-3">
                 {event.description}
               </p>

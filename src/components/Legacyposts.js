@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Play, Image, ZoomIn, X, ChevronLeft, ChevronRight, Grid, List } from 'lucide-react';
-import video1 from '../assets/legacypage/v1.mp4';
 
 const LegacyPost = () => {
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [viewMode, setViewMode] = useState('grid');
   const [filter, setFilter] = useState('all');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [legacyMedia, setLegacyMedia] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Sample legacy media files (mix of images and videos)
-  const legacyMedia = [
-    // Images
-
-    // Videos (using sample video URLs - replace with your actual video sources)
-    { id: 1, type: 'video', src: video1 },
-
-  ];
+  useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/legacy');
+        if (res.ok) {
+          const data = await res.json();
+          // transform the srcs to point to full backend url
+          const formatted = data.map(item => ({
+            ...item,
+            src: `http://localhost:5000${item.src}`,
+            id: item._id
+          }));
+          setLegacyMedia(formatted);
+        }
+      } catch (err) {
+        console.error("Failed to fetch legacy media", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMedia();
+  }, []);
 
   const filteredMedia = legacyMedia.filter(media => {
     if (filter === 'all') return true;
@@ -53,34 +68,32 @@ const LegacyPost = () => {
             {/* Background decoration */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
             <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-white/5 to-transparent rounded-full -translate-y-48 translate-x-48"></div>
-            
+
             <div className="relative z-10 text-center">
               <h1 className="text-3xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
                 Legacy Moments Collection
               </h1>
               <p className="text-lg md:text-xl text-justify text-blue-100 max-w-3xl mx-auto leading-relaxed mb-8 font-normal">
-              This space is dedicated to celebrating the kindness of our supporters. Every contribution leaves a lasting impact helping provide school supplies, educational opportunities, and brighter futures for children through Project Smile.
+                This space is dedicated to celebrating the kindness of our supporters. Every contribution leaves a lasting impact helping provide school supplies, educational opportunities, and brighter futures for children through Project Smile.
               </p>
-              
+
               {/* View Mode Controls */}
               <div className="flex justify-center gap-3">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-3 rounded-xl transition-all duration-300 ${
-                    viewMode === 'grid'
+                  className={`p-3 rounded-xl transition-all duration-300 ${viewMode === 'grid'
                       ? 'bg-white/20 text-white shadow-lg scale-105'
                       : 'bg-white/10 text-blue-100 hover:bg-white/15 hover:scale-105'
-                  }`}
+                    }`}
                 >
                   <Grid size={20} />
                 </button>
                 <button
                   onClick={() => setViewMode('masonry')}
-                  className={`p-3 rounded-xl transition-all duration-300 ${
-                    viewMode === 'masonry'
+                  className={`p-3 rounded-xl transition-all duration-300 ${viewMode === 'masonry'
                       ? 'bg-white/20 text-white shadow-lg scale-105'
                       : 'bg-white/10 text-blue-100 hover:bg-white/15 hover:scale-105'
-                  }`}
+                    }`}
                 >
                   <List size={20} />
                 </button>
@@ -93,11 +106,10 @@ const LegacyPost = () => {
       {/* Gallery */}
       <div className="max-w-6xl mx-auto px-4 pb-16">
         {filteredMedia.length > 0 ? (
-          <div className={`${
-            viewMode === 'grid' 
-              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' 
+          <div className={`${viewMode === 'grid'
+              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
               : 'columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6'
-          }`}>
+            }`}>
             {filteredMedia.map((media, index) => (
               <div
                 key={media.id}
@@ -108,9 +120,8 @@ const LegacyPost = () => {
                   {media.type === 'video' ? (
                     <video
                       src={media.src}
-                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-110 ${
-                        viewMode === 'grid' ? 'h-64' : 'h-auto'
-                      }`}
+                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-110 ${viewMode === 'grid' ? 'h-64' : 'h-auto'
+                        }`}
                       muted
                       loop
                     />
@@ -118,24 +129,23 @@ const LegacyPost = () => {
                     <img
                       src={media.src}
                       alt=""
-                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-110 ${
-                        viewMode === 'grid' ? 'h-64' : 'h-auto'
-                      }`}
+                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-110 ${viewMode === 'grid' ? 'h-64' : 'h-auto'
+                        }`}
                     />
                   )}
-                  
+
                   {/* Media type icon */}
                   <div className="absolute top-3 right-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-2 rounded-full shadow-lg">
                     {media.type === 'video' ? <Play size={14} /> : <Image size={14} />}
                   </div>
-                  
+
                   {/* Hover overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                     <div className="bg-gradient-to-r from-orange-400 to-orange-500 text-white p-4 rounded-full shadow-xl transform scale-75 group-hover:scale-100 transition-transform duration-300">
                       <ZoomIn size={24} />
                     </div>
                   </div>
-                  
+
                   {/* Title overlay */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <p className="text-sm font-normal truncate">Legacy Collection</p>
@@ -160,20 +170,20 @@ const LegacyPost = () => {
         <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4" onClick={closeModal}>
           <div className="relative max-w-7xl max-h-full" onClick={(e) => e.stopPropagation()}>
             {selectedMedia.type === 'video' ? (
-              <video 
-                src={selectedMedia.src} 
-                className="max-w-full max-h-[90vh] rounded-2xl shadow-2xl" 
-                controls 
-                autoPlay 
+              <video
+                src={selectedMedia.src}
+                className="max-w-full max-h-[90vh] rounded-2xl shadow-2xl"
+                controls
+                autoPlay
               />
             ) : (
-              <img 
-                src={selectedMedia.src} 
-                alt="" 
-                className="max-w-full max-h-[90vh] rounded-2xl shadow-2xl object-contain" 
+              <img
+                src={selectedMedia.src}
+                alt=""
+                className="max-w-full max-h-[90vh] rounded-2xl shadow-2xl object-contain"
               />
             )}
-            
+
             {/* Close button */}
             <button
               className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-200 hover:scale-110"
@@ -181,7 +191,7 @@ const LegacyPost = () => {
             >
               <X size={20} />
             </button>
-            
+
             {/* Navigation buttons */}
             <button
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-200 hover:scale-110"
@@ -195,7 +205,7 @@ const LegacyPost = () => {
             >
               <ChevronRight size={24} />
             </button>
-            
+
             {/* Title */}
             <div className="absolute bottom-4 left-4 right-4 bg-black/50 text-white p-4 rounded-xl backdrop-blur-sm">
               <p className="text-lg font-normal text-center">Legacy Collection</p>
