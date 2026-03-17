@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings, Video, Calendar, Image as ImageIcon, Save, LogOut, Plus, Trash2, LayoutDashboard, Menu, X, CheckCircle2, AlertCircle, BarChart3, Users, Activity, TrendingUp, MonitorPlay } from 'lucide-react';
+import { Settings, Video, Calendar, Image as ImageIcon, Save, LogOut, Plus, Trash2, LayoutDashboard, Menu, X, CheckCircle2, AlertCircle, BarChart3, Users, Activity, TrendingUp, MonitorPlay, Library } from 'lucide-react';
 import API from '../../config/api';
 
 export default function AdminDashboard() {
@@ -22,8 +22,15 @@ export default function AdminDashboard() {
     const [uploadFile, setUploadFile] = useState(null);
     const [uploadTitle, setUploadTitle] = useState('');
 
+    // State for Resources Tab
+    const [resources, setResources] = useState([]);
+    const [newResource, setNewResource] = useState({ category: 'training', title: '', description: '', image: '', link: '', level: '', duration: '', students: 0, language: '', gradient: '' });
+
     // State for Views Tab
     const [courseViews, setCourseViews] = useState({});
+
+    // State for Smiles Tab
+    const [smiles, setSmiles] = useState([]);
 
     // Notification State
     const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
@@ -43,7 +50,10 @@ export default function AdminDashboard() {
         fetchSettings();
         fetchEvents();
         fetchLegacyMedia();
+        fetchResources();
+        fetchSmiles();
         fetchCourseViews();
+        fetchResources();
 
         const interval = setInterval(() => {
             fetchCourseViews();
@@ -163,6 +173,58 @@ export default function AdminDashboard() {
         } catch (err) { showToast('Delete failed', 'error'); }
     };
 
+    // --- RESOURCES ACTIONS ---
+    const fetchResources = async () => {
+        try {
+            const res = await fetch(`${API}/api/resources`);
+            if (res.ok) setResources(await res.json());
+        } catch (err) { console.error(err); }
+    };
+
+    const createResource = async (e) => {
+        e.preventDefault();
+        try {
+            await fetch(`${API}/api/resources`, {
+                method: 'POST',
+                headers: authHeaders,
+                body: JSON.stringify(newResource)
+            });
+            setNewResource({ category: 'training', title: '', description: '', image: '', link: '', level: '', duration: '', students: 0, language: '', gradient: '' });
+            showToast('Resource Card created successfully!');
+            fetchResources();
+        } catch (err) { showToast('Failed to create resource', 'error'); }
+    };
+
+    const deleteResource = async (id) => {
+        try {
+            await fetch(`${API}/api/resources/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            showToast('Resource Card deleted');
+            fetchResources();
+        } catch (err) { showToast('Failed to delete resource', 'error'); }
+    };
+
+    // --- SMILES ACTIONS ---
+    const fetchSmiles = async () => {
+        try {
+            const res = await fetch(`${API}/api/smiles`);
+            if (res.ok) setSmiles(await res.json());
+        } catch (err) { console.error(err); }
+    };
+
+    const deleteSmile = async (id) => {
+        try {
+            await fetch(`${API}/api/smiles/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            showToast('Smile deleted');
+            fetchSmiles();
+        } catch (err) { showToast('Failed to delete smile', 'error'); }
+    };
+
     // --- VIEWS LOGIC ---
     const fetchCourseViews = async () => {
         try {
@@ -189,7 +251,9 @@ export default function AdminDashboard() {
         { id: 'views', label: 'Overview', icon: LayoutDashboard },
         { id: 'settings', label: 'Preferences', icon: Settings },
         { id: 'events', label: 'Announcements', icon: Calendar },
+        { id: 'resources', label: 'Hub Resources', icon: Library },
         { id: 'legacy', label: 'Media Library', icon: ImageIcon },
+        { id: 'smiles', label: 'Smiles', icon: Users },
     ];
 
     return (
@@ -516,6 +580,97 @@ export default function AdminDashboard() {
                     </div>
                 )}
 
+                {/* --- RESOURCES TAB --- */}
+                {activeTab === 'resources' && (
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-6xl mx-auto">
+                        <div className="mb-8 flex justify-between items-end">
+                            <div>
+                                <h2 className="text-3xl font-black text-slate-800 tracking-tight">Hub Resources</h2>
+                                <p className="text-sm font-bold text-slate-500 mt-2">Manage cards for Training, Education, and Languages.</p>
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-2xl shadow-sm border border-indigo-50 p-8 mb-10">
+                            <h3 className="font-black text-lg mb-6 text-slate-800 pb-4 border-b border-slate-100 flex items-center gap-2">
+                                <Plus size={20} className="text-blue-500" /> Add New Resource Card
+                            </h3>
+                            <form onSubmit={createResource} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div>
+                                    <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Hub Category</label>
+                                    <select value={newResource.category} onChange={e => setNewResource({ ...newResource, category: e.target.value })} className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm focus:outline-none focus:border-blue-500 transition-all">
+                                        <option value="training">Training Programs</option>
+                                        <option value="education">Education Content</option>
+                                        <option value="language">Language Courses</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Card Title</label>
+                                    <input required type="text" placeholder="e.g. Freelance Editing" value={newResource.title} onChange={e => setNewResource({ ...newResource, title: e.target.value })} className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm focus:outline-none focus:border-blue-500 transition-all" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Image URL / File Name</label>
+                                    <input required type="text" placeholder="e.g. https://... or 1.png" value={newResource.image} onChange={e => setNewResource({ ...newResource, image: e.target.value })} className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm focus:outline-none focus:border-blue-500 transition-all" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Content Link</label>
+                                    <input required type="text" placeholder="e.g. https://docs.google.com/..." value={newResource.link} onChange={e => setNewResource({ ...newResource, link: e.target.value })} className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm focus:outline-none focus:border-blue-500 transition-all" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Level</label>
+                                    <input type="text" placeholder="e.g. Beginner (Optional)" value={newResource.level} onChange={e => setNewResource({ ...newResource, level: e.target.value })} className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm focus:outline-none focus:border-blue-500 transition-all" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Duration</label>
+                                    <input type="text" placeholder="e.g. 6 Weeks (Optional)" value={newResource.duration} onChange={e => setNewResource({ ...newResource, duration: e.target.value })} className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm focus:outline-none focus:border-blue-500 transition-all" />
+                                </div>
+
+                                {/* Conditional fields based on category */}
+                                {newResource.category === 'language' && (
+                                    <>
+                                        <div>
+                                            <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Language Translation</label>
+                                            <input type="text" placeholder="e.g. Hindi → English" value={newResource.language} onChange={e => setNewResource({ ...newResource, language: e.target.value })} className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm focus:outline-none focus:border-blue-500 transition-all" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Gradient Class</label>
+                                            <input type="text" placeholder="e.g. bg-gradient-to-br from-orange-500" value={newResource.gradient} onChange={e => setNewResource({ ...newResource, gradient: e.target.value })} className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm focus:outline-none focus:border-blue-500 transition-all" />
+                                        </div>
+                                    </>
+                                )}
+
+                                <div className="sm:col-span-2 lg:col-span-3">
+                                    <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Description</label>
+                                    <textarea required placeholder="Card description..." value={newResource.description} onChange={e => setNewResource({ ...newResource, description: e.target.value })} className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl font-bold text-sm focus:outline-none focus:border-blue-500 transition-all min-h-[80px] resize-y" />
+                                </div>
+
+                                <button type="submit" className="sm:col-span-2 lg:col-span-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-base py-3.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">Add to Hub</button>
+                            </form>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {resources.map(res => (
+                                <div key={res._id} className="bg-white p-5 rounded-2xl shadow-sm border border-indigo-50 flex flex-col group relative transform transition hover:-translate-y-1 hover:shadow-lg">
+                                    <button onClick={() => deleteResource(res._id)} className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/90 shadow-sm flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-all opacity-0 group-hover:opacity-100">
+                                        <Trash2 size={16} />
+                                    </button>
+                                    <div className="h-32 rounded-xl overflow-hidden mb-4 relative bg-slate-100">
+                                        {res.image.startsWith('http') || res.image.length > 5 ? (
+                                            <img src={res.image.startsWith('http') ? res.image : `/${res.image}`} alt={res.title} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs text-center border p-2">Img: {res.image}</div>
+                                        )}
+                                        <div className="absolute top-2 left-2 px-2 py-1 rounded bg-black/60 text-white text-xs font-bold uppercase backdrop-blur-sm">
+                                            {res.category}
+                                        </div>
+                                    </div>
+                                    <h4 className="font-black text-lg text-slate-800 mb-1 leading-tight line-clamp-1">{res.title}</h4>
+                                    <p className="text-xs font-medium text-slate-500 mb-4 line-clamp-2">{res.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {/* --- LEGACY TAB (REFINED) --- */}
                 {activeTab === 'legacy' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-6xl mx-auto">
@@ -558,6 +713,51 @@ export default function AdminDashboard() {
                                     )}
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* --- SMILES TAB --- */}
+                {activeTab === 'smiles' && (
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-6xl mx-auto">
+                        <div className="mb-8 flex justify-between items-end">
+                            <div>
+                                <h2 className="text-3xl font-black text-slate-800 tracking-tight">Smiles Submissions</h2>
+                                <p className="text-sm font-bold text-slate-500 mt-2">Manage stories and media shared by users around the world.</p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {smiles.map(smile => (
+                                <div key={smile._id} className="bg-white p-6 rounded-2xl shadow-sm border border-orange-50 flex flex-col group relative transform transition hover:-translate-y-1 hover:shadow-lg hover:shadow-orange-500/10">
+                                    <button onClick={() => deleteSmile(smile._id)} className="absolute top-5 right-5 z-10 w-8 h-8 rounded-full bg-white/90 shadow-sm flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-all opacity-0 group-hover:opacity-100">
+                                        <Trash2 size={16} />
+                                    </button>
+                                    <div className="h-48 rounded-xl overflow-hidden mb-4 relative bg-slate-100">
+                                        {smile.fileType === 'video' ? (
+                                            <video src={`${API}${smile.fileUrl}`} controls className="w-full h-full object-cover" />
+                                        ) : (
+                                            <img src={`${API}${smile.fileUrl}`} alt={smile.name} className="w-full h-full object-cover" />
+                                        )}
+                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 pb-3">
+                                            <h4 className="font-bold text-white leading-tight">{smile.name}</h4>
+                                            <p className="text-xs text-white/90 flex items-center gap-1 mt-1"><span className="text-xs">📍</span> {smile.location}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex-1 relative">
+                                        <span className="text-3xl absolute -top-4 left-0 text-orange-200">"</span>
+                                        <p className="text-sm font-medium text-slate-600 mb-4 line-clamp-4 leading-relaxed relative z-10 pl-4">{smile.story}</p>
+                                    </div>
+                                    <div className="pt-4 border-t border-slate-100 text-xs font-bold text-slate-400">
+                                        Shared on {new Date(smile.createdAt).toLocaleDateString()}
+                                    </div>
+                                </div>
+                            ))}
+                            {smiles.length === 0 && (
+                                <div className="col-span-full bg-white p-10 rounded-2xl shadow-sm border border-dashed border-slate-200 text-center text-slate-400 font-bold">
+                                    No smiles submitted yet.
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}

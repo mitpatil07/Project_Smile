@@ -1,3 +1,2 @@
-const API = "https://api.projectsmile.world";
-
+const API = "http://localhost:5000";
 export default API;

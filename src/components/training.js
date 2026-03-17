@@ -11,7 +11,7 @@ import {
   Sparkles
 } from "lucide-react";
 
-const courses = [
+const HARDCODED_COURSES = [
   { id: 1, title: "Freelance Video Editing", duration: "6 Weeks", description: "Master video editing techniques and build a portfolio that attracts high-paying clients in the competitive freelance market.", students: 2387, img: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&h=200&fit=crop", doc: "https://docs.google.com/document/d/1d9SWXt1R5txTmdfCma6biqEsloEILEvDYobj9qTcAog/edit?tab=t.0#heading=h.2rsnqid7p97c" },
   { id: 2, title: "Advanced Graphic Design", duration: "8 Weeks", description: "Dive deep into design theory, typography, and visual communication to create stunning designs that convert.", students: 2785, img: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=400&h=200&fit=crop", doc: "https://docs.google.com/document/d/1_WjogzgG6QUfWqtpIaLI2rrMqt9RJRmHXvRF4KrBIL4/edit?tab=t.0#heading=h.g8uhyrbs8yb5" },
   { id: 3, title: "Social Media Management", duration: "5 Weeks", description: "Learn to create engaging content, build communities, and drive business growth through strategic social media.", students: 2845, img: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=200&fit=crop", doc: "https://docs.google.com/document/d/1RsRldCESIooUX5NbIo-RiU4EHbgfuzlbaJC_7hkDqsw/edit?tab=t.0#heading=h.12ejtjd6b4g0" },
@@ -36,16 +36,21 @@ const courses = [
 ];
 
 const SkillTraining = () => {
+  const [courses, setCourses] = useState([...HARDCODED_COURSES]);
   const [bookmarkedCourses, setBookmarkedCourses] = useState(new Set());
   const [courseViews, setCourseViews] = useState({});
 
   useEffect(() => {
-    // Fetch live views on component mount
-    const fetchViews = async () => {
+    // Polling function for live views
+    const fetchData = async () => {
       try {
-        const res = await fetch(`${API}/api/courses/views`);
-        if (res.ok) {
-          const data = await res.json();
+        const [viewsRes, coursesRes] = await Promise.all([
+          fetch(`${API}/api/courses/views`),
+          fetch(`${API}/api/resources?category=training`)
+        ]);
+
+        if (viewsRes.ok) {
+          const data = await viewsRes.json();
           // Merge training views with prefix 't_' into state
           const trainingViews = {};
           for (const [key, val] of Object.entries(data)) {
@@ -55,11 +60,19 @@ const SkillTraining = () => {
           }
           setCourseViews(trainingViews);
         }
+
+        if (coursesRes.ok) {
+          const data = await coursesRes.json();
+          setCourses([...HARDCODED_COURSES, ...data]);
+        }
       } catch (err) {
-        console.error("Failed to fetch views", err);
+        console.error("Failed to fetch data", err);
       }
     };
-    fetchViews();
+
+    fetchData(); // initial fetch
+    const interval = setInterval(fetchData, 3000); // realtime poll every 3s
+    return () => clearInterval(interval);
   }, []);
 
   const toggleBookmark = (courseId) => {
@@ -72,29 +85,30 @@ const SkillTraining = () => {
     setBookmarkedCourses(newBookmarked);
   };
 
-  const openCourse = async (course) => {
-    const courseId = `t_${course.id}`; // Prefix 't_' for training courses
+  const openCourse = (course) => {
+    const courseId = `t_${course._id || course.id}`; // Prefix 't_' for training courses
 
-    // Register the view with the backend
-    try {
-      const res = await fetch(`${API}/api/courses/${courseId}/view`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ baseViews: course.students })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setCourseViews(prev => ({ ...prev, [courseId]: data.views }));
-      }
-    } catch (err) {
-      console.error("Error setting views:", err);
-    }
-
-    if (course.doc) {
-      window.open(course.doc, "_blank");
+    if (course.link || course.doc) {
+      window.open(course.link || course.doc, "_blank");
     } else {
       alert("Document not available for this course.");
+      return;
     }
+
+    // Register the view with the backend asynchronously (fire and forget)
+    fetch(`${API}/api/courses/${courseId}/view`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ baseViews: course.students })
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+        throw new Error("Network response was not ok.");
+      })
+      .then(data => {
+        setCourseViews(prev => ({ ...prev, [courseId]: data.views }));
+      })
+      .catch(err => console.error("Error setting views:", err));
   };
 
   return (
@@ -126,19 +140,23 @@ const SkillTraining = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {courses.map((course) => (
             <div
-              key={course.id}
+              key={course._id || course.id}
               className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 relative"
             >
               {/* Top gradient border */}
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-blue-800 transform scale-x-0 group-hover:scale-x-50 transition-transform duration-300 origin-left"></div>
 
               {/* Course Image */}
-              <div className="relative h-56 overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500">
-                <img
-                  src={course.img}
-                  alt={course.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
+              <div className="relative h-56 overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                {course.image || course.img ? (
+                  <img
+                    src={course.image || course.img}
+                    alt={course.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                ) : (
+                  <span className="text-white text-xl font-bold opacity-50 px-4 text-center">{course.title}</span>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
 
@@ -159,7 +177,7 @@ const SkillTraining = () => {
                   </div>
                   <div className="flex items-center gap-2 bg-gray-50 text-gray-700 px-3 py-2 rounded-full text-sm font-medium">
                     <span className="text-blue-600">👥</span>
-                    {courseViews[`t_${course.id}`] !== undefined ? courseViews[`t_${course.id}`] : course.students} views
+                    {courseViews[`t_${course._id || course.id}`] !== undefined ? courseViews[`t_${course._id || course.id}`] : course.students} views
                   </div>
                 </div>
 

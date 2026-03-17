@@ -57,6 +57,8 @@ app.use('/api/settings', require('./routes/settingsRoutes'));
 app.use('/api/events', require('./routes/eventRoutes'));
 app.use('/api/legacy', require('./routes/legacyRoutes'));
 app.use('/api/courses', require('./routes/courseRoutes'));
+app.use('/api/resources', require('./routes/resourceRoutes'));
+app.use('/api/smiles', require('./routes/smileRoutes'));
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
@@ -65,9 +67,9 @@ mongoose.connect(process.env.MONGO_URI)
         const { seedAdmin } = require('./controllers/authController');
         seedAdmin(); // Create default admin if not exists
 
-        // Start background view simulator
-        const { startViewSimulator } = require('./controllers/courseController');
-        startViewSimulator();
+        // Seed initial static resource cards if empty
+        const { seedResources } = require('./controllers/resourceController');
+        seedResources();
     })
     .catch(err => console.error('MongoDB connection error:', err));
 

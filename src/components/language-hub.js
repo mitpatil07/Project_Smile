@@ -12,31 +12,8 @@ function LanguagesTranslator() {
     const [hoveredButton, setHoveredButton] = useState(null);
     const [courseViews, setCourseViews] = useState({});
 
-    useEffect(() => {
-        // Fetch live views on component mount
-        const fetchViews = async () => {
-            try {
-                const res = await fetch(`${API}/api/courses/views`);
-                if (res.ok) {
-                    const data = await res.json();
-                    // Merge language views with prefix 'lang_' into state
-                    const langViews = {};
-                    for (const [key, val] of Object.entries(data)) {
-                        if (key.startsWith('lang_')) {
-                            langViews[key] = val;
-                        }
-                    }
-                    setCourseViews(langViews);
-                }
-            } catch (err) {
-                console.error("Failed to fetch views", err);
-            }
-        };
-        fetchViews();
-    }, []);
-
     // Language courses data
-    const courses = [
+    const HARDCODED_COURSES = [
         {
             id: 1,
             language: "Hindi → English",
@@ -92,27 +69,67 @@ function LanguagesTranslator() {
             gradient: "bg-gradient-to-br from-blue-600 to-purple-600",
             courseUrl: "https://drive.google.com/file/d/19msRalxB2mm2IHQCAUqIL77K7K8RXstX/view?usp=sharing"
         },
-
     ];
 
-    const handleCourseClick = async (course) => {
-        const courseId = `lang_${course.id}`; // Prefix 'lang_' for language courses
+    const [courses, setCourses] = useState([...HARDCODED_COURSES]);
 
-        // Register the view with the backend
-        try {
-            const res = await fetch(`${API}/api/courses/${courseId}/view`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ baseViews: parseInt(course.students) })
-            });
-            if (res.ok) {
-                const data = await res.json();
-                setCourseViews(prev => ({ ...prev, [courseId]: data.views }));
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [viewsRes, coursesRes] = await Promise.all([
+                    fetch(`${API}/api/courses/views`),
+                    fetch(`${API}/api/resources?category=language`)
+                ]);
+
+                if (viewsRes.ok) {
+                    const data = await viewsRes.json();
+                    const langViews = {};
+                    for (const [key, val] of Object.entries(data)) {
+                        if (key.startsWith('lang_')) {
+                            langViews[key] = val;
+                        }
+                    }
+                    setCourseViews(langViews);
+                }
+
+                if (coursesRes.ok) {
+                    const data = await coursesRes.json();
+                    setCourses([...HARDCODED_COURSES, ...data]);
+                }
+            } catch (err) {
+                console.error("Failed to fetch data", err);
             }
-        } catch (err) {
-            console.error("Error setting views:", err);
+        };
+
+        fetchData(); // initial fetch
+        const interval = setInterval(fetchData, 3000); // 3s polling
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleCourseClick = (course) => {
+        const courseId = `lang_${course._id || course.id}`; // Prefix 'lang_' for language courses
+
+        if (course.courseUrl || course.link) {
+            window.open(course.courseUrl || course.link, '_blank');
+        } else {
+            alert('Document not available for this course.');
+            return;
         }
-        window.open(course.courseUrl, "_blank"); // opens in new tab
+
+        // Register the view with the backend asynchronously
+        fetch(`${API}/api/courses/${courseId}/view`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ baseViews: parseInt(course.students) || 0 })
+        })
+            .then(res => {
+                if (res.ok) return res.json();
+                throw new Error("Network error.");
+            })
+            .then(data => {
+                setCourseViews(prev => ({ ...prev, [courseId]: data.views }));
+            })
+            .catch(err => console.error("Error setting views:", err));
     };
 
 
@@ -212,24 +229,32 @@ function LanguagesTranslator() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
                     {courses.map((course, index) => (
                         <div
-                            key={course.id}
-                            onMouseEnter={() => setHoveredCard(index)}
-                            onMouseLeave={() => setHoveredCard(null)}
+                            key={course._id || course.id}
                             style={{ animation: `slideInUp 0.6s ease-out ${0.15 * index}s both` }}
                             className="w-full"
                         >
-                            <div className={`bg-white rounded-2xl sm:rounded-3xl overflow-hidden h-full flex flex-col transition-all duration-500 ease-out shadow-lg hover:shadow-2xl ${hoveredCard === index
-                                ? '-translate-y-3 scale-[1.02]'
-                                : 'translate-y-0 scale-100'
-                                }`}>
-                                {/* Course Image */}
-                                <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-                                    <img
-                                        src={course.image}
-                                        alt={course.title}
-                                        className={`w-full h-full object-cover object-top transition-transform duration-500 ${hoveredCard === index ? 'scale-110' : 'scale-100'
-                                            }`}
-                                    />
+                            <div
+                                className={`group relative overflow-hidden rounded-3xl transition-all duration-500
+                                ${hoveredCard === (course._id || course.id) ? 'transform -translate-y-4 shadow-2xl' : 'shadow-lg hover:shadow-xl'}
+                            `}
+                                onMouseEnter={() => setHoveredCard(course._id || course.id)}
+                                onMouseLeave={() => setHoveredCard(null)}
+                            >
+                                {/* Card Background Gradient */}
+                                <div className={`absolute inset-0 ${course.gradient || 'bg-gradient-to-br from-gray-500 to-gray-600'} opacity-10`} />
+
+                                {/* Card Header/Image Area */}
+                                <div className={`h-48 relative overflow-hidden flex items-center justify-center ${course.gradient || 'bg-gradient-to-br from-gray-500 to-gray-600'}`}>
+                                    <div className="absolute inset-0 bg-black/20 mix-blend-overlay" />
+                                    {course.image && course.image.length > 5 ? (
+                                        <img
+                                            src={course.image}
+                                            alt={course.language || course.title}
+                                            className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                    ) : (
+                                        <span className="text-white text-xl font-bold opacity-80 px-4 text-center z-10">{course.title}</span>
+                                    )}
                                     {/* Bottom gradient overlay to hide bottom part */}
                                     <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
                                     <div className={`absolute top-4 right-4 ${course.gradient} text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold text-xs sm:text-sm shadow-lg`}>
@@ -247,29 +272,37 @@ function LanguagesTranslator() {
                                     </p>
 
                                     {/* Course Stats */}
-                                    <div className="grid grid-cols-2 gap-3 sm:gap-3 mb-4 sm:mb-5 pb-4 sm:pb-5 border-b border-slate-200">
-                                        <div className="text-center">
-                                            <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 text-orange-500" />
-                                            <p className="text-xs font-semibold text-slate-600 leading-tight">{course.level}</p>
+                                    <div className="flex justify-between items-center mb-4 sm:mb-5 pb-4 sm:pb-5 border-b border-slate-200">
+                                        <div className="flex items-center gap-2 group/stat">
+                                            <div className="p-2 rounded-lg bg-gray-50 group-hover/stat:bg-white transition-colors duration-300">
+                                                <Users size={16} className="text-gray-400 group-hover/stat:text-blue-500 transition-colors" />
+                                            </div>
+                                            <span className="text-sm font-semibold text-gray-700 group-hover/stat:text-gray-900 transition-colors">
+                                                {courseViews[`lang_${course._id || course.id}`] !== undefined ? courseViews[`lang_${course._id || course.id}`] : (course.students || 0)} views
+                                            </span>
                                         </div>
-                                        <div className="text-center">
-                                            <Users className="w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 text-blue-500" />
-                                            <p className="text-xs font-semibold text-slate-600">{courseViews[`lang_${course.id}`] !== undefined ? courseViews[`lang_${course.id}`] : course.students} views</p>
+                                        <div className="flex items-center gap-2 group/stat">
+                                            <div className="p-2 rounded-lg bg-gray-50 group-hover/stat:bg-white transition-colors duration-300">
+                                                <Clock size={16} className="text-gray-400 group-hover/stat:text-orange-500 transition-colors" />
+                                            </div>
+                                            <span className="text-sm font-semibold text-gray-700 group-hover/stat:text-gray-900 transition-colors">
+                                                {course.duration || 'Self-paced'}
+                                            </span>
                                         </div>
                                     </div>
 
                                     {/* CTA Button */}
                                     <button
                                         onClick={() => handleCourseClick(course)}
-                                        onMouseEnter={() => setHoveredButton(index)}
+                                        onMouseEnter={() => setHoveredButton(course._id || course.id)}
                                         onMouseLeave={() => setHoveredButton(null)}
-                                        className={`flex items-center justify-center gap-2 sm:gap-3 ${course.gradient} text-white py-3 sm:py-3.5 px-5 sm:px-6 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base uppercase tracking-wider transition-all duration-300 w-full shadow-lg hover:shadow-xl ${hoveredButton === index
-                                            ? 'scale-105 -translate-y-1'
-                                            : 'scale-100 translate-y-0'
-                                            }`}
+                                        className={`w-full py-4 px-6 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all duration-300
+                                        ${course.gradient || 'bg-gradient-to-br from-gray-500 to-gray-600'} text-white shadow-lg
+                                        ${hoveredButton === (course._id || course.id) ? 'shadow-xl scale-[1.02]' : 'hover:shadow-md'}
+                                    `}
                                     >
                                         Enroll Now
-                                        <ChevronRight className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 ${hoveredButton === index ? 'translate-x-1' : 'translate-x-0'
+                                        <ChevronRight className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 ${hoveredButton === (course._id || course.id) ? 'translate-x-1' : 'translate-x-0'
                                             }`} />
                                     </button>
                                 </div>

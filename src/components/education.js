@@ -117,6 +117,7 @@ const COURSES_DATA = [
 ];
 
 const EducationalResources = () => {
+  const [courses, setCourses] = useState([...COURSES_DATA]);
   const [bookmarkedCourses, setBookmarkedCourses] = useState(new Set());
   const [thumbnails, setThumbnails] = useState({});
   const [filter, setFilter] = useState('all');
@@ -125,24 +126,42 @@ const EducationalResources = () => {
   const visitorCount = 1078;
 
   useEffect(() => {
+    // Generate thumbnails for initial courses
     COURSES_DATA.forEach(course => {
       fetchThumbnail(course.link).then(url => {
         setThumbnails(prev => ({ ...prev, [course.id]: url }));
       });
     });
 
-    const fetchViews = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(`${API}/api/courses/views`);
-        if (res.ok) {
-          const data = await res.json();
+        const [viewsRes, coursesRes] = await Promise.all([
+          fetch(`${API}/api/courses/views`),
+          fetch(`${API}/api/resources?category=education`)
+        ]);
+
+        if (viewsRes.ok) {
+          const data = await viewsRes.json();
           setCourseViews(data);
         }
+
+        if (coursesRes.ok) {
+          const data = await coursesRes.json();
+          setCourses([...COURSES_DATA, ...data]);
+          data.forEach(course => {
+            fetchThumbnail(course.link).then(url => {
+              setThumbnails(prev => ({ ...prev, [course._id]: url }));
+            });
+          });
+        }
       } catch (err) {
-        console.error("Failed to fetch course views", err);
+        console.error("Failed to fetch data", err);
       }
     };
-    fetchViews();
+
+    fetchData();
+    const interval = setInterval(fetchData, 3000); // 3s polling
+    return () => clearInterval(interval);
   }, []);
 
   const fetchThumbnail = async (url) => {
@@ -152,15 +171,19 @@ const EducationalResources = () => {
       if (videoId) {
         return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       }
-      if (parsed.searchParams.get("list")) {
-        const res = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`);
+
+      const listId = parsed.searchParams.get("list");
+      if (listId) {
+        const res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${listId}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`);
         const data = await res.json();
-        return data.thumbnail_url || "https://via.placeholder.com/480x360?text=No+Thumbnail";
+        if (data.items && data.items.length > 0) {
+          return data.items[0].snippet.thumbnails.high.url;
+        }
       }
-    } catch (err) {
-      console.error("Thumbnail fetch failed", err);
+      return "https://via.placeholder.com/480x360?text=Course+Thumbnail";
+    } catch (e) {
+      return "https://via.placeholder.com/480x360?text=Course+Thumbnail";
     }
-    return "https://via.placeholder.com/480x360?text=No+Thumbnail";
   };
 
   const toggleBookmark = (courseId) => {
@@ -173,21 +196,30 @@ const EducationalResources = () => {
     setBookmarkedCourses(newBookmarked);
   };
 
-  const openVideo = async (course) => {
-    try {
-      const res = await fetch(`${API}/api/courses/${course.id}/view`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ baseViews: course.students })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setCourseViews(prev => ({ ...prev, [course.id]: data.views }));
-      }
-    } catch (err) {
-      console.error("Error setting views:", err);
+  const openVideo = (course) => {
+    const cid = course._id || course.id;
+
+    if (course.link) {
+      window.open(course.link, "_blank");
+    } else {
+      alert("Link not available for this resource.");
+      return;
     }
-    window.open(course.link, "_blank");
+
+    // Register the view with the backend asynchronously
+    fetch(`${API}/api/courses/${cid}/view`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ baseViews: course.students })
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+        throw new Error("Network response was not ok.");
+      })
+      .then(data => {
+        setCourseViews(prev => ({ ...prev, [cid]: data.views }));
+      })
+      .catch(err => console.error("Error setting views:", err));
   };
 
   const getLevelBadgeStyle = (level) => {
@@ -204,8 +236,8 @@ const EducationalResources = () => {
   };
 
   const filteredCourses = filter === 'all'
-    ? COURSES_DATA
-    : COURSES_DATA.filter(course => course.level.toLowerCase() === filter);
+    ? courses
+    : courses.filter(course => course.level && course.level.toLowerCase() === filter);
 
   return (
     <div
@@ -385,13 +417,13 @@ const EducationalResources = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredCourses.map((course) => (
             <div
-              key={course.id}
+              key={course._id || course.id}
               className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden hover:-translate-y-2"
             >
               {/* Course Image */}
               <div className="relative h-44 overflow-hidden">
                 <img
-                  src={thumbnails[course.id] || "https://via.placeholder.com/480x360?text=Loading..."}
+                  src={thumbnails[course._id || course.id] || "https://via.placeholder.com/480x360?text=Loading..."}
                   alt={course.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
@@ -412,11 +444,11 @@ const EducationalResources = () => {
 
                 {/* Bookmark Button */}
                 <button
-                  onClick={() => toggleBookmark(course.id)}
+                  onClick={() => toggleBookmark(course._id || course.id)}
                   className="absolute top-3 right-3 w-9 h-9 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300"
                 >
                   <svg
-                    className={`w-4 h-4 transition-colors duration-300 ${bookmarkedCourses.has(course.id) ? 'text-red-500' : 'text-gray-400'
+                    className={`w-4 h-4 transition-colors duration-300 ${bookmarkedCourses.has(course._id || course.id) ? 'text-red-500' : 'text-gray-400'
                       }`}
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -426,11 +458,13 @@ const EducationalResources = () => {
                 </button>
 
                 {/* Level Badge */}
-                <div className="absolute top-3 left-3">
-                  <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${getLevelBadgeStyle(course.level)}`}>
-                    {course.level}
-                  </span>
-                </div>
+                {course.level && (
+                  <div className="absolute top-3 left-3">
+                    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${getLevelBadgeStyle(course.level)}`}>
+                      {course.level}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Course Content */}
@@ -449,7 +483,7 @@ const EducationalResources = () => {
                       <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                       <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
                     </svg>
-                    <span>{courseViews[course.id] !== undefined ? courseViews[course.id] : course.students} views</span>
+                    <span>{courseViews[course._id || course.id] !== undefined ? courseViews[course._id || course.id] : (course.students || 0)} views</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
