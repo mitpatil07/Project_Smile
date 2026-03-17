@@ -5,13 +5,16 @@ const jwt = require('jsonwebtoken');
 // Set up initial admin during server start (run once)
 const seedAdmin = async () => {
     try {
-        const adminExists = await Admin.findOne({ username: 'admin' });
+        const adminUser = process.env.ADMIN_USERNAME || 'admin';
+        const adminPass = process.env.ADMIN_PASSWORD || 'admin123';
+
+        const adminExists = await Admin.findOne({ username: adminUser });
         if (!adminExists) {
             const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash('admin123', salt);
-            const admin = new Admin({ username: 'admin', password: hashedPassword });
+            const hashedPassword = await bcrypt.hash(adminPass, salt);
+            const admin = new Admin({ username: adminUser, password: hashedPassword });
             await admin.save();
-            console.log('Seed Admin User created: username=admin password=admin123');
+            console.log(`Seed Admin User created: username=${adminUser} password=***`);
         }
     } catch (error) {
         console.error('Seed Admin error:', error);

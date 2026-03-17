@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -36,6 +36,30 @@ const courses = [
 
 const SkillTraining = () => {
   const [bookmarkedCourses, setBookmarkedCourses] = useState(new Set());
+  const [courseViews, setCourseViews] = useState({});
+
+  useEffect(() => {
+    // Fetch live views on component mount
+    const fetchViews = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/courses/views');
+        if (res.ok) {
+          const data = await res.json();
+          // Merge training views with prefix 't_' into state
+          const trainingViews = {};
+          for (const [key, val] of Object.entries(data)) {
+            if (key.startsWith('t_')) {
+              trainingViews[key] = val;
+            }
+          }
+          setCourseViews(trainingViews);
+        }
+      } catch (err) {
+        console.error("Failed to fetch views", err);
+      }
+    };
+    fetchViews();
+  }, []);
 
   const toggleBookmark = (courseId) => {
     const newBookmarked = new Set(bookmarkedCourses);
@@ -45,6 +69,31 @@ const SkillTraining = () => {
       newBookmarked.add(courseId);
     }
     setBookmarkedCourses(newBookmarked);
+  };
+
+  const openCourse = async (course) => {
+    const courseId = `t_${course.id}`; // Prefix 't_' for training courses
+
+    // Register the view with the backend
+    try {
+      const res = await fetch(`http://localhost:5000/api/courses/${courseId}/view`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ baseViews: course.students })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCourseViews(prev => ({ ...prev, [courseId]: data.views }));
+      }
+    } catch (err) {
+      console.error("Error setting views:", err);
+    }
+
+    if (course.doc) {
+      window.open(course.doc, "_blank");
+    } else {
+      alert("Document not available for this course.");
+    }
   };
 
   return (
@@ -109,7 +158,7 @@ const SkillTraining = () => {
                   </div>
                   <div className="flex items-center gap-2 bg-gray-50 text-gray-700 px-3 py-2 rounded-full text-sm font-medium">
                     <span className="text-blue-600">👥</span>
-                    {course.students} students
+                    {courseViews[`t_${course.id}`] !== undefined ? courseViews[`t_${course.id}`] : course.students} views
                   </div>
                 </div>
 
@@ -118,16 +167,9 @@ const SkillTraining = () => {
                   {course.description}
                 </p>
 
-                {/* Footer */}
                 <div className="flex items-center justify-between gap-4">
                   <button
-                    onClick={() => {
-                      if (course.doc) {
-                        window.open(course.doc, "_blank");
-                      } else {
-                        alert("Document not available for this course.");
-                      }
-                    }}
+                    onClick={() => openCourse(course)}
                     className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg relative overflow-hidden group"
                   >
                     <span className="relative z-10">Start Course</span>

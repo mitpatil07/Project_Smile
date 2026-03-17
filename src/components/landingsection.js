@@ -21,23 +21,36 @@ function YouTubeSection() {
         days: 15, hours: 0, minutes: 0, seconds: 0
     });
 
-    const images = [img11, img2, img3, img4, img5, img6, img7, img8, img9, img10, img1];
+    const defaultImages = [img11, img2, img3, img4, img5, img6, img7, img8, img9, img10, img1];
+    const [images, setImages] = useState(defaultImages);
 
-    // Fetch settings from API
+    // Fetch settings and images from API
     useEffect(() => {
-        const fetchSettings = async () => {
+        const fetchData = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/settings');
-                if (res.ok) {
-                    const data = await res.json();
+                // Fetch Settings
+                const resSettings = await fetch('http://localhost:5000/api/settings');
+                if (resSettings.ok) {
+                    const data = await resSettings.json();
                     if (data.videoUrlId) setVideoId(data.videoUrlId);
                     if (data.eventTimerDate) setTargetDate(new Date(data.eventTimerDate));
                 }
+
+                // Fetch Legacy Photos for Gallery
+                const resLegacy = await fetch('http://localhost:5000/api/legacy');
+                if (resLegacy.ok) {
+                    const legacyData = await resLegacy.json();
+                    const imageOnly = legacyData.filter(item => item.type === 'image');
+                    if (imageOnly.length > 0) {
+                        const newImages = imageOnly.map(item => `http://localhost:5000${item.src}`);
+                        setImages(newImages.slice(0, 11)); // Take up to 11 to match grid
+                    }
+                }
             } catch (err) {
-                console.error("Error fetching settings:", err);
+                console.error("Error fetching data:", err);
             }
         };
-        fetchSettings();
+        fetchData();
     }, []);
 
     useEffect(() => {

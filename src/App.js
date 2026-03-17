@@ -1,6 +1,6 @@
 import React from "react";
 import "../src/App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import LandingPage from "./components/landingpage";
@@ -24,11 +24,15 @@ import usePageTracking from "./hooks/usePageTracking";
 function App() {
   // run tracking on every route change
   usePageTracking();
+  const location = useLocation();
+
+  // Check if current route is an admin route
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <div>
       <ScrollToTop />
-      <Navbar />
+      {!isAdminRoute && <Navbar />}
 
       <Routes>
         <Route path="/" element={<LandingPage />} />
@@ -46,7 +50,7 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
 
-      <Footer />
+      {!isAdminRoute && <Footer />}
     </div>
   );
 }
