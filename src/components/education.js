@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import API from "../config/api";
 // UI Constants
 const UI_CONSTANTS = {
   colors: {
@@ -133,7 +133,7 @@ const EducationalResources = () => {
 
     const fetchViews = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/courses/views');
+        const res = await fetch(`${API}/api/courses/views`);
         if (res.ok) {
           const data = await res.json();
           setCourseViews(data);
@@ -175,7 +175,7 @@ const EducationalResources = () => {
 
   const openVideo = async (course) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/courses/${course.id}/view`, {
+      const res = await fetch(`${API}/api/courses/${course.id}/view`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ baseViews: course.students })
@@ -370,8 +370,8 @@ const EducationalResources = () => {
                   key={level}
                   onClick={() => setFilter(level)}
                   className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 ${filter === level
-                      ? 'bg-blue-500 text-white shadow-lg'
-                      : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
+                    ? 'bg-blue-500 text-white shadow-lg'
+                    : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
                     }`}
                 >
                   {level.charAt(0).toUpperCase() + level.slice(1)}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Settings, Video, Calendar, Image as ImageIcon, Save, LogOut, Plus, Trash2, LayoutDashboard, Menu, X, CheckCircle2, AlertCircle, BarChart3, Users, Activity, TrendingUp, MonitorPlay } from 'lucide-react';
+import API from '../../config/api';
 
 export default function AdminDashboard() {
     const [activeTab, setActiveTab] = useState('views');
@@ -64,7 +65,7 @@ export default function AdminDashboard() {
     // --- SETTINGS ACTIONS ---
     const fetchSettings = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/settings');
+            const res = await fetch(`${API}/api/settings`);
             if (res.ok) {
                 const data = await res.json();
                 if (data.eventTimerDate) setEventDate(new Date(data.eventTimerDate).toISOString().slice(0, 16));
@@ -76,7 +77,7 @@ export default function AdminDashboard() {
 
     const saveSettings = async () => {
         try {
-            await fetch('http://localhost:5000/api/settings', {
+            await fetch(`${API}/api/settings`, {
                 method: 'PUT',
                 headers: authHeaders,
                 body: JSON.stringify({ eventTimerDate: eventDate, videoUrlId })
@@ -88,7 +89,7 @@ export default function AdminDashboard() {
     // --- EVENTS ACTIONS ---
     const fetchEvents = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/events');
+            const res = await fetch(`${API}/api/events`);
             if (res.ok) setEvents(await res.json());
         } catch (err) { console.error(err); }
     };
@@ -96,7 +97,7 @@ export default function AdminDashboard() {
     const createEvent = async (e) => {
         e.preventDefault();
         try {
-            await fetch('http://localhost:5000/api/events', {
+            await fetch(`${API}/api/events`, {
                 method: 'POST',
                 headers: authHeaders,
                 body: JSON.stringify(newEvent)
@@ -109,7 +110,7 @@ export default function AdminDashboard() {
 
     const deleteEvent = async (id) => {
         try {
-            await fetch(`http://localhost:5000/api/events/${id}`, {
+            await fetch(`${API}/api/events/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -121,7 +122,7 @@ export default function AdminDashboard() {
     // --- LEGACY ACTIONS ---
     const fetchLegacyMedia = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/legacy');
+            const res = await fetch(`${API}/api/legacy`);
             if (res.ok) setLegacyMedia(await res.json());
         } catch (err) { console.error(err); }
     };
@@ -135,7 +136,7 @@ export default function AdminDashboard() {
         formData.append('title', uploadTitle);
 
         try {
-            const res = await fetch('http://localhost:5000/api/legacy', {
+            const res = await fetch(`${API}/api/legacy`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
@@ -153,7 +154,7 @@ export default function AdminDashboard() {
 
     const deleteLegacy = async (id) => {
         try {
-            await fetch(`http://localhost:5000/api/legacy/${id}`, {
+            await fetch(`${API}/api/legacy/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -165,7 +166,7 @@ export default function AdminDashboard() {
     // --- VIEWS LOGIC ---
     const fetchCourseViews = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/courses/views');
+            const res = await fetch(`${API}/api/courses/views`);
             if (res.ok) setCourseViews(await res.json());
         } catch (err) { console.error(err); }
     };
@@ -541,9 +542,9 @@ export default function AdminDashboard() {
                             {legacyMedia.map(media => (
                                 <div key={media._id} className="relative group bg-slate-100 rounded-2xl overflow-hidden shadow-md break-inside-avoid">
                                     {media.type === 'video' ? (
-                                        <video src={`http://localhost:5000${media.src}`} autoPlay loop muted playsInline className="w-full object-cover" />
+                                        <video src={`${API}${media.src}`} autoPlay loop muted playsInline className="w-full object-cover" />
                                     ) : (
-                                        <img src={`http://localhost:5000${media.src}`} alt="Asset" className="w-full object-cover" />
+                                        <img src={`${API}${media.src}`} alt="Asset" className="w-full object-cover" />
                                     )}
                                     <div className="absolute inset-0 bg-indigo-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 backdrop-blur-sm">
                                         <button onClick={() => deleteLegacy(media._id)} className="w-12 h-12 rounded-full bg-white text-rose-500 flex items-center justify-center hover:bg-rose-50 hover:scale-110 transition-all shadow-xl">

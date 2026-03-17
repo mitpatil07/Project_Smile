@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Download, BookOpen, Play, Pause, Heart, Star, Users, Award, Clock, Brain, Globe, ChevronRight } from "lucide-react";
+import API from "../config/api";
 
 // Keep your original local image imports
 import img1 from "../assets/landingpage/img1.png";
@@ -29,7 +30,7 @@ function YouTubeSection() {
         const fetchData = async () => {
             try {
                 // Fetch Settings
-                const resSettings = await fetch('http://localhost:5000/api/settings');
+                const resSettings = await fetch(`${API}/api/settings`);
                 if (resSettings.ok) {
                     const data = await resSettings.json();
                     if (data.videoUrlId) setVideoId(data.videoUrlId);
@@ -37,12 +38,12 @@ function YouTubeSection() {
                 }
 
                 // Fetch Legacy Photos for Gallery
-                const resLegacy = await fetch('http://localhost:5000/api/legacy');
+                const resLegacy = await fetch(`${API}/api/legacy`);
                 if (resLegacy.ok) {
                     const legacyData = await resLegacy.json();
                     const imageOnly = legacyData.filter(item => item.type === 'image');
                     if (imageOnly.length > 0) {
-                        const newImages = imageOnly.map(item => `http://localhost:5000${item.src}`);
+                        const newImages = imageOnly.map(item => `${API}${item.src}`);
                         setImages(newImages.slice(0, 11)); // Take up to 11 to match grid
                     }
                 }
@@ -109,7 +110,7 @@ function YouTubeSection() {
 
     const handleVideoClick = async () => {
         try {
-            await fetch('http://localhost:5000/api/settings/view', { method: 'POST' });
+            await fetch(`${API}/api/settings/view`, { method: 'POST' });
         } catch (err) {
             console.error("Error incrementing view count:", err);
         }

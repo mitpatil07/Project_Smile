@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Image, ZoomIn, X, ChevronLeft, ChevronRight, Grid, List } from 'lucide-react';
+import API from '../config/api';
 
 const LegacyPost = () => {
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -12,13 +13,13 @@ const LegacyPost = () => {
   useEffect(() => {
     const fetchMedia = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/legacy');
+        const res = await fetch(`${API}/api/legacy`);
         if (res.ok) {
           const data = await res.json();
           // transform the srcs to point to full backend url
           const formatted = data.map(item => ({
             ...item,
-            src: `http://localhost:5000${item.src}`,
+            src: `${API}${item.src}`,
             id: item._id
           }));
           setLegacyMedia(formatted);
@@ -82,8 +83,8 @@ const LegacyPost = () => {
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-3 rounded-xl transition-all duration-300 ${viewMode === 'grid'
-                      ? 'bg-white/20 text-white shadow-lg scale-105'
-                      : 'bg-white/10 text-blue-100 hover:bg-white/15 hover:scale-105'
+                    ? 'bg-white/20 text-white shadow-lg scale-105'
+                    : 'bg-white/10 text-blue-100 hover:bg-white/15 hover:scale-105'
                     }`}
                 >
                   <Grid size={20} />
@@ -91,8 +92,8 @@ const LegacyPost = () => {
                 <button
                   onClick={() => setViewMode('masonry')}
                   className={`p-3 rounded-xl transition-all duration-300 ${viewMode === 'masonry'
-                      ? 'bg-white/20 text-white shadow-lg scale-105'
-                      : 'bg-white/10 text-blue-100 hover:bg-white/15 hover:scale-105'
+                    ? 'bg-white/20 text-white shadow-lg scale-105'
+                    : 'bg-white/10 text-blue-100 hover:bg-white/15 hover:scale-105'
                     }`}
                 >
                   <List size={20} />
@@ -107,8 +108,8 @@ const LegacyPost = () => {
       <div className="max-w-6xl mx-auto px-4 pb-16">
         {filteredMedia.length > 0 ? (
           <div className={`${viewMode === 'grid'
-              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-              : 'columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6'
+            ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
+            : 'columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6'
             }`}>
             {filteredMedia.map((media, index) => (
               <div

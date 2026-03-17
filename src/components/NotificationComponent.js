@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Bell, BellRing } from 'lucide-react';
+import API from "../config/api";
 
 export default function NotificationEvent() {
   const [notifiedEvents, setNotifiedEvents] = useState([]);
@@ -9,7 +10,7 @@ export default function NotificationEvent() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/events');
+        const res = await fetch(`${API}/api/events`);
         if (res.ok) {
           const data = await res.json();
           // Take top 2 events

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Image, ZoomIn, X, ChevronLeft, ChevronRight, Grid, List } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import API from '../config/api';
 
 import imgi2 from "../assets/hopeframes/i2.jpg";
 import imgi3 from "../assets/hopeframes/i3.jpg";
@@ -95,13 +96,13 @@ const MediaGallery = () => {
   useEffect(() => {
     const fetchMedia = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/legacy');
+        const res = await fetch(`${API}/api/legacy`);
         if (res.ok) {
           const data = await res.json();
           // transform the srcs to point to full backend url
           const formatted = data.map(item => ({
             ...item,
-            src: `http://localhost:5000${item.src}`,
+            src: `${API}${item.src}`,
             id: item._id
           }));
 

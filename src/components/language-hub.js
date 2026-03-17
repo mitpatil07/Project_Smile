@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BookOpen, Globe, ChevronRight, Award, Users, Clock } from "lucide-react";
+import API from "../config/api";
 import img1 from "../assets/LanguageHub/1.png";
 import img2 from '../assets/LanguageHub/6.png'
 import img3 from "../assets/LanguageHub/3.png";
@@ -15,7 +16,7 @@ function LanguagesTranslator() {
         // Fetch live views on component mount
         const fetchViews = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/courses/views');
+                const res = await fetch(`${API}/api/courses/views`);
                 if (res.ok) {
                     const data = await res.json();
                     // Merge language views with prefix 'lang_' into state
@@ -99,7 +100,7 @@ function LanguagesTranslator() {
 
         // Register the view with the backend
         try {
-            const res = await fetch(`http://localhost:5000/api/courses/${courseId}/view`, {
+            const res = await fetch(`${API}/api/courses/${courseId}/view`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ baseViews: parseInt(course.students) })

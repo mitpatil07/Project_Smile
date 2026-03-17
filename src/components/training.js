@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import API from "../config/api";
 
 import {
   Star,
@@ -42,7 +43,7 @@ const SkillTraining = () => {
     // Fetch live views on component mount
     const fetchViews = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/courses/views');
+        const res = await fetch(`${API}/api/courses/views`);
         if (res.ok) {
           const data = await res.json();
           // Merge training views with prefix 't_' into state
@@ -76,7 +77,7 @@ const SkillTraining = () => {
 
     // Register the view with the backend
     try {
-      const res = await fetch(`http://localhost:5000/api/courses/${courseId}/view`, {
+      const res = await fetch(`${API}/api/courses/${courseId}/view`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ baseViews: course.students })
