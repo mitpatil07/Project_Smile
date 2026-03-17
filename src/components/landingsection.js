@@ -14,21 +14,49 @@ import img9 from "../assets/hopeframes/i11.jpg";
 import img10 from "../assets/hopeframes/i13.jpg";
 import img11 from "../assets/hopeframes/img.jpg"
 
-function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
+function YouTubeSection() {
+    const [videoId, setVideoId] = useState("aUkgcHGo_8c"); // Default fallback
+    const [targetDate, setTargetDate] = useState(new Date('2025-09-15T16:40:00Z'));
     const [timeLeft, setTimeLeft] = useState({
         days: 15, hours: 0, minutes: 0, seconds: 0
     });
 
-    const images = [img11, img2, img3, img4, img5, img6, img7, img8, img9, img10, img1];
+    const defaultImages = [img11, img2, img3, img4, img5, img6, img7, img8, img9, img10, img1];
+    const [images, setImages] = useState(defaultImages);
+
+    // Fetch settings and images from API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Fetch Settings
+                const resSettings = await fetch('http://localhost:5000/api/settings');
+                if (resSettings.ok) {
+                    const data = await resSettings.json();
+                    if (data.videoUrlId) setVideoId(data.videoUrlId);
+                    if (data.eventTimerDate) setTargetDate(new Date(data.eventTimerDate));
+                }
+
+                // Fetch Legacy Photos for Gallery
+                const resLegacy = await fetch('http://localhost:5000/api/legacy');
+                if (resLegacy.ok) {
+                    const legacyData = await resLegacy.json();
+                    const imageOnly = legacyData.filter(item => item.type === 'image');
+                    if (imageOnly.length > 0) {
+                        const newImages = imageOnly.map(item => `http://localhost:5000${item.src}`);
+                        setImages(newImages.slice(0, 11)); // Take up to 11 to match grid
+                    }
+                }
+            } catch (err) {
+                console.error("Error fetching data:", err);
+            }
+        };
+        fetchData();
+    }, []);
 
     useEffect(() => {
-        // FIXED EVENT DATE - This is your exact target date
-        // Set to show 12 days, 22 hours, 38 minutes, 21 seconds from August 19, 2025
-        const FIXED_EVENT_DATE = new Date('2025-09-15 16:40:00'); // September 1, 2025 at 6:38:21 PM
-        
         const timer = setInterval(() => {
             const now = new Date();
-            const diff = FIXED_EVENT_DATE - now;
+            const diff = targetDate - now;
 
             if (diff <= 0) {
                 clearInterval(timer);
@@ -45,7 +73,7 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
 
         // Calculate initial time immediately
         const now = new Date();
-        const diff = FIXED_EVENT_DATE - now;
+        const diff = targetDate - now;
         if (diff > 0) {
             setTimeLeft({
                 days: Math.floor(diff / (1000 * 60 * 60 * 24)),
@@ -56,7 +84,7 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
         }
 
         return () => clearInterval(timer);
-    }, []);
+    }, [targetDate]);
 
     const [hoveredImage, setHoveredImage] = useState(null);
     const [hoveredCard, setHoveredCard] = useState(null);
@@ -77,6 +105,15 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
             default:
                 break;
         }
+    };
+
+    const handleVideoClick = async () => {
+        try {
+            await fetch('http://localhost:5000/api/settings/view', { method: 'POST' });
+        } catch (err) {
+            console.error("Error incrementing view count:", err);
+        }
+        window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
     };
 
     return (
@@ -191,49 +228,44 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
                     {/* Video Thumbnail Section - Always shows thumbnail */}
                     <div className="relative max-w-5xl mx-auto animate-slide-up">
                         <div
-                            className={`bg-glass border-2 border-white/20 rounded-3xl overflow-hidden transition-all duration-500 ease-out ${
-                                hoveredImage === 'video' 
-                                    ? 'shadow-2xl shadow-black/30 -translate-y-3 scale-[1.02]' 
-                                    : 'shadow-xl shadow-black/20'
-                            }`}
+                            className={`bg-glass border-2 border-white/20 rounded-3xl overflow-hidden transition-all duration-500 ease-out ${hoveredImage === 'video'
+                                ? 'shadow-2xl shadow-black/30 -translate-y-3 scale-[1.02]'
+                                : 'shadow-xl shadow-black/20'
+                                }`}
                             onMouseEnter={() => setHoveredImage('video')}
                             onMouseLeave={() => setHoveredImage(null)}
                         >
                             <div
-                                className={`relative aspect-video cursor-pointer bg-gradient-to-br from-blue-500/10 to-orange-500/10 transition-all duration-500 overflow-hidden ${
-                                    thumbnailHovered ? "scale-[1.02]" : "scale-100"
-                                }`}
-                                onClick={() => window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank')}
+                                className={`relative aspect-video cursor-pointer bg-gradient-to-br from-blue-500/10 to-orange-500/10 transition-all duration-500 overflow-hidden ${thumbnailHovered ? "scale-[1.02]" : "scale-100"
+                                    }`}
+                                onClick={handleVideoClick}
                                 onMouseEnter={() => setThumbnailHovered(true)}
                                 onMouseLeave={() => setThumbnailHovered(false)}
                             >
                                 {/* YouTube thumbnail image */}
-                                <img 
+                                <img
                                     src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
                                     alt="Video Thumbnail"
                                     className="w-full h-full object-cover"
                                 />
-                                
+
                                 {/* Video thumbnail overlay */}
-                                <div className={`absolute inset-0 transition-all duration-300 ${
-                                    thumbnailHovered
-                                        ? 'bg-gradient-to-br from-blue-500/30 to-orange-500/30'
-                                        : 'bg-gradient-to-br from-blue-500/20 to-orange-500/20'
-                                }`} />
-                                
+                                <div className={`absolute inset-0 transition-all duration-300 ${thumbnailHovered
+                                    ? 'bg-gradient-to-br from-blue-500/30 to-orange-500/30'
+                                    : 'bg-gradient-to-br from-blue-500/20 to-orange-500/20'
+                                    }`} />
+
                                 {/* Play button */}
-                                <div className={`absolute top-1/2 left-1/2 transition-transform duration-300 ${
-                                    thumbnailHovered ? "-translate-x-1/2 -translate-y-1/2 scale-110" : "-translate-x-1/2 -translate-y-1/2"
-                                }`}>
+                                <div className={`absolute top-1/2 left-1/2 transition-transform duration-300 ${thumbnailHovered ? "-translate-x-1/2 -translate-y-1/2 scale-110" : "-translate-x-1/2 -translate-y-1/2"
+                                    }`}>
                                     <div className="bg-gradient-orange text-white p-6 md:p-8 rounded-full animate-pulse-play border-6 border-white/40 flex items-center justify-center backdrop-blur-sm">
                                         <Play size={36} fill="currentColor" className="ml-1 md:w-14 md:h-14" />
                                     </div>
                                 </div>
-                                
+
                                 {/* Video info overlay */}
-                                <div className={`absolute bottom-8 left-8 right-8 bg-black/70 backdrop-blur-sm rounded-2xl p-4 text-white transition-all duration-300 ${
-                                    thumbnailHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-                                }`}>
+                                <div className={`absolute bottom-8 left-8 right-8 bg-black/70 backdrop-blur-sm rounded-2xl p-4 text-white transition-all duration-300 ${thumbnailHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+                                    }`}>
                                     <div className="flex items-center gap-2 text-sm font-medium">
                                         <Play size={16} />
                                         Click to watch on YouTube
@@ -241,28 +273,28 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
 
-                            {/* Shop & Support Section */}
-        <div className="text-center mb-8">
-          <div className="inline-flex flex-col items-center">
-            <p className="text-black/80 text-sm mb-4 pt-5 font-bold">
-            Watch the recording of our previous live event.
-            </p>
-            <a
-              href="https://www.youtube.com/playlist?list=PLFGAQbILBvBxfp88dinhojW8fnyowKEL9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full text-white font-bold text-lg transition-all duration-300 hover:from-orange-400 hover:to-orange-500 hover:scale-105 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/30 border-2 border-orange-400/50 overflow-hidden"
-            >
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-              <span className="relative flex items-center gap-3">
-              Previous Live
-              </span>
-            </a>
-          </div>
-        </div>
+                    {/* Shop & Support Section */}
+                    <div className="text-center mb-8">
+                        <div className="inline-flex flex-col items-center">
+                            <p className="text-black/80 text-sm mb-4 pt-5 font-bold">
+                                Watch the recording of our previous live event.
+                            </p>
+                            <a
+                                href="https://www.youtube.com/playlist?list=PLFGAQbILBvBxfp88dinhojW8fnyowKEL9"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group relative inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full text-white font-bold text-lg transition-all duration-300 hover:from-orange-400 hover:to-orange-500 hover:scale-105 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/30 border-2 border-orange-400/50 overflow-hidden"
+                            >
+                                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+                                <span className="relative flex items-center gap-3">
+                                    Previous Live
+                                </span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -270,11 +302,10 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
             <div className="flex justify-center items-center min-h-[48vh] py-8">
                 <section className="max-w-[90%] rounded-3xl py-8 md:py-12 px-0 md:px-16 bg-gradient-to-b from-blue-300/40 to-orange-200/40 animate-scale-in">
                     <div
-                        className={`bg-gradient-to-b from-yellow-400/40 to-white/90 border-2 border-white/30 rounded-3xl p-5 md:p-8 text-center transition-all duration-500 ease-out max-w-2xl min-w-72 mx-auto backdrop-blur-sm ${
-                            hoveredImage === 'countdown'
-                                ? '-translate-y-3 scale-[1.03] shadow-2xl shadow-black/20'
-                                : 'translate-y-0 scale-100 shadow-xl shadow-black/10'
-                        }`}
+                        className={`bg-gradient-to-b from-yellow-400/40 to-white/90 border-2 border-white/30 rounded-3xl p-5 md:p-8 text-center transition-all duration-500 ease-out max-w-2xl min-w-72 mx-auto backdrop-blur-sm ${hoveredImage === 'countdown'
+                            ? '-translate-y-3 scale-[1.03] shadow-2xl shadow-black/20'
+                            : 'translate-y-0 scale-100 shadow-xl shadow-black/10'
+                            }`}
                         onMouseEnter={() => setHoveredImage('countdown')}
                         onMouseLeave={() => setHoveredImage(null)}
                     >
@@ -284,7 +315,7 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
                                 Event Starts In
                             </h2>
                         </div>
-                        
+
                         <div className="text-2xl md:text-5xl font-black font-mono text-blue-800 tracking-wider flex justify-center items-center gap-1 md:gap-2 bg-white/50 p-4 md:p-8 rounded-2xl border-2 border-blue-800/10">
                             {[
                                 { value: timeLeft.days, unit: 'd', label: 'Days' },
@@ -314,9 +345,8 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
             {/* Mission Section */}
             <section className="py-16 px-6">
                 <div
-                    className={`bg-gradient-to-br from-blue-500/8 to-purple-600/8 backdrop-blur-sm border-2 border-white/20 rounded-3xl p-8 md:p-20 text-center shadow-xl shadow-black/5 transition-all duration-500 ease-out max-w-4xl mx-auto ${
-                        hoveredImage === 'mission' ? '-translate-y-2 scale-[1.01]' : 'translate-y-0 scale-100'
-                    }`}
+                    className={`bg-gradient-to-br from-blue-500/8 to-purple-600/8 backdrop-blur-sm border-2 border-white/20 rounded-3xl p-8 md:p-20 text-center shadow-xl shadow-black/5 transition-all duration-500 ease-out max-w-4xl mx-auto ${hoveredImage === 'mission' ? '-translate-y-2 scale-[1.01]' : 'translate-y-0 scale-100'
+                        }`}
                     style={{ animation: 'ys-fadeInLeft 0.8s ease-out 0.6s both' }}
                     onMouseEnter={() => setHoveredImage('mission')}
                     onMouseLeave={() => setHoveredImage(null)}
@@ -354,11 +384,10 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
                                 <img
                                     src={src}
                                     alt={`Gallery ${index + 1}`}
-                                    className={`w-full h-64 md:h-80 object-cover rounded-3xl border-3 border-white/30 transition-all duration-500 ease-out ${
-                                        hoveredImage === index
-                                            ? 'shadow-2xl shadow-black/25 scale-105 -translate-y-3 rotate-1 brightness-110 saturate-120'
-                                            : 'shadow-lg shadow-black/12 scale-100 translate-y-0 rotate-0 brightness-100 saturate-100'
-                                    }`}
+                                    className={`w-full h-64 md:h-80 object-cover rounded-3xl border-3 border-white/30 transition-all duration-500 ease-out ${hoveredImage === index
+                                        ? 'shadow-2xl shadow-black/25 scale-105 -translate-y-3 rotate-1 brightness-110 saturate-120'
+                                        : 'shadow-lg shadow-black/12 scale-100 translate-y-0 rotate-0 brightness-100 saturate-100'
+                                        }`}
                                     onMouseEnter={() => setHoveredImage(index)}
                                     onMouseLeave={() => setHoveredImage(null)}
                                 />
@@ -407,15 +436,13 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
                             onMouseLeave={() => setHoveredCard(null)}
                             style={{ animation: `ys-slideInUp 0.6s ease-out ${0.2 * index}s both` }}
                         >
-                            <div className={`bg-glass-light border-2 border-white/20 rounded-3xl p-12 text-center h-full flex flex-col justify-between transition-all duration-500 ease-out relative overflow-hidden ${
-                                hoveredCard === index
-                                    ? 'shadow-2xl shadow-black/20 -translate-y-3 scale-[1.03]'
-                                    : 'shadow-xl shadow-black/10 translate-y-0 scale-100'
-                            }`}>
-                                {/* Card icon */}
-                                <div className={`w-20 h-20 ${card.gradient} rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg shadow-black/20 transition-all duration-300 ${
-                                    hoveredCard === index ? 'scale-110 rotate-[5deg]' : 'scale-100 rotate-0'
+                            <div className={`bg-glass-light border-2 border-white/20 rounded-3xl p-12 text-center h-full flex flex-col justify-between transition-all duration-500 ease-out relative overflow-hidden ${hoveredCard === index
+                                ? 'shadow-2xl shadow-black/20 -translate-y-3 scale-[1.03]'
+                                : 'shadow-xl shadow-black/10 translate-y-0 scale-100'
                                 }`}>
+                                {/* Card icon */}
+                                <div className={`w-20 h-20 ${card.gradient} rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg shadow-black/20 transition-all duration-300 ${hoveredCard === index ? 'scale-110 rotate-[5deg]' : 'scale-100 rotate-0'
+                                    }`}>
                                     <card.icon size={36} className="text-white" />
                                 </div>
 
@@ -430,24 +457,21 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
 
                                 <button
                                     onClick={() => handleResourceClick(card.type)}
-                                    className={`flex items-center justify-center gap-3 ${card.gradient} text-white py-4 px-8 rounded-2xl font-bold text-lg uppercase tracking-wider transition-all duration-300 cursor-pointer border-0 w-full ${
-                                        hoveredButton === index
-                                            ? 'shadow-2xl shadow-black/30 scale-105 -translate-y-1'
-                                            : 'shadow-lg shadow-black/20 scale-100 translate-y-0'
-                                    }`}
+                                    className={`flex items-center justify-center gap-3 ${card.gradient} text-white py-4 px-8 rounded-2xl font-bold text-lg uppercase tracking-wider transition-all duration-300 cursor-pointer border-0 w-full ${hoveredButton === index
+                                        ? 'shadow-2xl shadow-black/30 scale-105 -translate-y-1'
+                                        : 'shadow-lg shadow-black/20 scale-100 translate-y-0'
+                                        }`}
                                     onMouseEnter={() => setHoveredButton(index)}
                                     onMouseLeave={() => setHoveredButton(null)}
                                 >
                                     {card.button}
-                                    <ChevronRight size={20} className={`transition-transform duration-300 ${
-                                        hoveredButton === index ? 'translate-x-1' : 'translate-x-0'
-                                    }`} />
+                                    <ChevronRight size={20} className={`transition-transform duration-300 ${hoveredButton === index ? 'translate-x-1' : 'translate-x-0'
+                                        }`} />
                                 </button>
 
                                 {/* Decorative elements */}
-                                <div className={`absolute -top-1/2 -right-1/2 w-full h-full ${card.gradient} rounded-full opacity-5 transition-all duration-500 ${
-                                    hoveredCard === index ? 'scale-120' : 'scale-100'
-                                }`} />
+                                <div className={`absolute -top-1/2 -right-1/2 w-full h-full ${card.gradient} rounded-full opacity-5 transition-all duration-500 ${hoveredCard === index ? 'scale-120' : 'scale-100'
+                                    }`} />
                             </div>
                         </div>
                     ))}
@@ -460,7 +484,7 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600" />
 
                     {/* Animated background pattern */}
-                    <div 
+                    <div
                         className="absolute inset-0 opacity-10 pointer-events-none animate-float"
                         style={{
                             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.3'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -486,9 +510,8 @@ function YouTubeSection({ videoId = "aUkgcHGo_8c" }) {
                         {/* CTA Button */}
                         <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
                             <a href="https://www.paypal.com/donate/?hosted_button_id=7QRRA68W82CF4" target="_blank"
-                                className={`flex items-center justify-center gap-3 bg-gradient-orange text-white py-4 md:py-5 px-8 md:px-10 rounded-2xl font-bold text-lg md:text-xl transition-all duration-300 cursor-pointer border-0 min-w-60 md:min-w-0 max-w-80 md:max-w-none ${
-                                    hoveredButton === 'primary' ? 'scale-105 -translate-y-1 shadow-2xl shadow-black/30' : 'scale-100 translate-y-0 shadow-lg shadow-black/20'
-                                }`}
+                                className={`flex items-center justify-center gap-3 bg-gradient-orange text-white py-4 md:py-5 px-8 md:px-10 rounded-2xl font-bold text-lg md:text-xl transition-all duration-300 cursor-pointer border-0 min-w-60 md:min-w-0 max-w-80 md:max-w-none ${hoveredButton === 'primary' ? 'scale-105 -translate-y-1 shadow-2xl shadow-black/30' : 'scale-100 translate-y-0 shadow-lg shadow-black/20'
+                                    }`}
                                 onMouseEnter={() => setHoveredButton('primary')}
                                 onMouseLeave={() => setHoveredButton(null)}
                             >

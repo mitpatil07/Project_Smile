@@ -1,31 +1,49 @@
-# Dependencies
+# =========================
+# 🔧 Dependencies
+# =========================
 node_modules/
+backend/node_modules/
 
-# Build output
+# =========================
+# 🏗️ Build Output
+# =========================
 dist/
 build/
+frontend/dist/
+frontend/build/
 
-# Logs
+# =========================
+# 🔐 Environment Files (IMPORTANT)
+# =========================
+.env
+.env.*
+backend/.env
+frontend/.env
+
+# =========================
+# 🧾 Logs
+# =========================
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-# Local environment files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# =========================
+# 🖥️ OS Files
+# =========================
+.DS_Store
+Thumbs.db
 
-# IDE / Editor settings
+# =========================
+# 🧠 IDE / Editor
+# =========================
 .vscode/
 .idea/
 *.swp
 
-# Mac system files
-.DS_Store
-
-# Windows system files
-Thumbs.db
+# =========================
+# 📦 Optional
+# =========================
+coverage/

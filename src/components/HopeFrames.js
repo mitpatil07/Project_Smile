@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Play, Image, ZoomIn, X, ChevronLeft, ChevronRight, Grid, List } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -88,8 +88,40 @@ const MediaGallery = () => {
   const [filter, setFilter] = useState('all');
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [mediaFiles, setMediaFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch dynamic media from backend API
+  useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/legacy');
+        if (res.ok) {
+          const data = await res.json();
+          // transform the srcs to point to full backend url
+          const formatted = data.map(item => ({
+            ...item,
+            src: `http://localhost:5000${item.src}`,
+            id: item._id
+          }));
+
+          // Combine fetched media with static media so there's always content
+          setMediaFiles([...formatted, ...staticMediaFiles]);
+        } else {
+          setMediaFiles(staticMediaFiles);
+        }
+      } catch (err) {
+        console.error("Failed to fetch legacy media", err);
+        setMediaFiles(staticMediaFiles);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMedia();
+  }, []);
+
   // Static media files using imported assets
-  const mediaFiles = [
+  const staticMediaFiles = [
     // Images
     { id: 1, type: 'image', src: imgi2 },
     { id: 2, type: 'image', src: imgi3 },
@@ -240,11 +272,11 @@ const MediaGallery = () => {
                 </button>
               </div>
               <Link
-  to="/Legacyposts"
-  className="inline-block mt-6 px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
->
-  Legacy Collection
-</Link>
+                to="/Legacyposts"
+                className="inline-block mt-6 px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              >
+                Legacy Collection
+              </Link>
 
             </div>
           </div>
