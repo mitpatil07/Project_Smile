@@ -1,3 +1,4 @@
-const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API = isLocal ? "http://localhost:5000" : "https://api.projectsmile.world";
+const API = "https://api.projectsmile.world";
+console.log("NEW BUILD FIX");
+
 export default API;
