@@ -41,26 +41,13 @@ import ayushtomer from "../assets/founder/ayushtomar.png"
       description: 'As Founder, Joe envisioned The Smile from witnessing the untapped potential in every heart, creating a movement to bridge love with wisdom and empower lives globally.'
     };
   
-    const president = {
-      name: 'Avirat Tomar',
-      role: 'President',
-      image: aviraltomar,
-      description: 'As President, Avirat leads The Smile with a passion for connecting people to empowering knowledge, driving the organization\'s mission to unlock human potential worldwide.'
-    };
-  
     const vicePresident = {
       name: 'Mitesh Patil',
       role: 'Project Manager',
       image: miteshpatil,
       description: 'Mitesh, as Project Manager, turns ideas into results with clarity, focus, and impact.'
     };
-  
-    const teamMember = {
-      name: 'Ayush Tomer',
-      role: 'Ai Expert',
-      image: ayushtomer,
-      description: 'Driving AI innovation and operational excellence through intelligent solutions and seamless execution.'
-    };
+
     
   
     const faqs = [
