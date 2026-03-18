@@ -1,7 +1,6 @@
 import React from "react";
 import { Brain, Play, ArrowRight } from "lucide-react";
 
-import aviraltomar from "../assets/founder/tomar.png";
 import joe from "../assets/founder/founderimg.png";
 
 const mentors = [
