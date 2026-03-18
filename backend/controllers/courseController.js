@@ -18,12 +18,12 @@ const getCourseViews = async (req, res) => {
 // Increment view
 const incrementCourseView = async (req, res) => {
     const { id } = req.params;
-    const { baseViews } = req.body;
+    const { baseViews } = req.body; // base views are no longer added to db, but still accepted for backwards compatibility
 
     try {
         let courseView = await CourseView.findOne({ courseId: id });
         if (!courseView) {
-            courseView = new CourseView({ courseId: id, views: (baseViews || 0) + 1 });
+            courseView = new CourseView({ courseId: id, views: 1 });
         } else {
             courseView.views += 1;
         }

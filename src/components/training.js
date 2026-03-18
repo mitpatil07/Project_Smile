@@ -177,7 +177,7 @@ const SkillTraining = () => {
                   </div>
                   <div className="flex items-center gap-2 bg-gray-50 text-gray-700 px-3 py-2 rounded-full text-sm font-medium">
                     <span className="text-blue-600">👥</span>
-                    {courseViews[`t_${course._id || course.id}`] !== undefined ? courseViews[`t_${course._id || course.id}`] : course.students} views
+                    {(course.students || 0) + (courseViews[`t_${course._id || course.id}`] || 0)} views
                   </div>
                 </div>
 

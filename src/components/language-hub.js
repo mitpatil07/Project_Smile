@@ -278,7 +278,7 @@ function LanguagesTranslator() {
                                                 <Users size={16} className="text-gray-400 group-hover/stat:text-blue-500 transition-colors" />
                                             </div>
                                             <span className="text-sm font-semibold text-gray-700 group-hover/stat:text-gray-900 transition-colors">
-                                                {courseViews[`lang_${course._id || course.id}`] !== undefined ? courseViews[`lang_${course._id || course.id}`] : (course.students || 0)} views
+                                                {(parseInt(course.students) || 0) + (courseViews[`lang_${course._id || course.id}`] || 0)} views
                                             </span>
                                         </div>
                                         <div className="flex items-center gap-2 group/stat">
