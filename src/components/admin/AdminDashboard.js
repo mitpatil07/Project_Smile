@@ -96,12 +96,30 @@ export default function AdminDashboard() {
         } catch (err) { showToast('Failed to save settings', 'error'); }
     };
 
-    // --- EVENTS ACTIONS ---
     const fetchEvents = async () => {
         try {
             const res = await fetch(`${API}/api/events`);
             if (res.ok) setEvents(await res.json());
         } catch (err) { console.error(err); }
+    };
+
+    const handleResetAnalytics = async () => {
+        if (!window.confirm("Are you sure you want to reset all tracking? This will permanently delete current real view counts across the entire site.")) return;
+
+        try {
+            const res = await fetch(`${API}/api/courses/views/reset`, {
+                method: 'DELETE',
+                headers: authHeaders
+            });
+            if (res.ok) {
+                showToast('Analytics cache has been cleared successfully.');
+                setCourseViews({}); // Empty local state immediately
+            } else {
+                showToast('Failed to reset analytics', 'error');
+            }
+        } catch (err) {
+            showToast('Failed to connect to server', 'error');
+        }
     };
 
     const createEvent = async (e) => {
@@ -503,6 +521,16 @@ export default function AdminDashboard() {
                             <button onClick={saveSettings} className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3.5 rounded-xl font-black text-base shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transform hover:-translate-y-1 transition-all">
                                 <Save size={18} /> Save Configuration
                             </button>
+
+                            <div className="pt-6 mt-6 border-t border-slate-100">
+                                <h3 className="block text-sm font-black text-rose-500 mb-3 uppercase tracking-widest">Danger Zone</h3>
+                                <div className="bg-rose-50 border border-rose-100 rounded-xl p-6">
+                                    <p className="text-sm font-bold text-rose-800 mb-4">Resetting system analytics will permanently delete all real-time view counts across hubs.</p>
+                                    <button onClick={handleResetAnalytics} className="w-full flex items-center justify-center gap-2 bg-rose-500 text-white px-4 py-3.5 rounded-xl font-black text-base shadow-lg shadow-rose-500/30 hover:shadow-rose-500/50 transform hover:-translate-y-1 transition-all">
+                                        <Trash2 size={18} /> Reset System Analytics
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}

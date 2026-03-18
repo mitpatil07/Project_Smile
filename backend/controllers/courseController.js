@@ -33,6 +33,16 @@ const incrementCourseView = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+// Reset all views (Admin only)
+const resetCourseViews = async (req, res) => {
+    try {
+        await CourseView.deleteMany({});
+        res.json({ message: 'All system analytics have been reset.' });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error while resetting views' });
+    }
+};
+
 // Background job to artificially increment views to simulate real-time traffic
 const startViewSimulator = () => {
     const runSimulator = async () => {
@@ -62,4 +72,4 @@ const startViewSimulator = () => {
     console.log(`[Simulator] Highly-realistic random view simulator started.`);
 };
 
-module.exports = { getCourseViews, incrementCourseView, startViewSimulator };
+module.exports = { getCourseViews, incrementCourseView, resetCourseViews, startViewSimulator };
