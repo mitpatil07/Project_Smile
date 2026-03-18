@@ -37,10 +37,16 @@ app.use('/api', globalLimiter);
 
 // 4. Restrict CORS (Update 'origin' array with your live frontend domain when deploying)
 const corsOptions = {
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'], // Add your Vercel/Netlify URL here later
+    origin: [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'https://projectsmile.world',
+        'https://www.projectsmile.world'
+    ],
     credentials: true,
     optionsSuccessStatus: 200
 };
+
 app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '10kb' })); // Limit body payload to 10kb
