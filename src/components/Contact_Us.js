@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, Brain, Globe, Users, BookOpen, Target, Diamond, HelpCircle, ChevronDown, ChevronUp, Smile } from 'lucide-react';
-import aviraltomar from "../assets/founder/tomar.png"
 import miteshpatil from "../assets/founder/mitesh.png"
 import founderimg from "../assets/founder/joemittunga.jpg"
-import ayushtomer from "../assets/founder/ayushtomar.png"
 
   
   const AboutPage = () => {
@@ -40,7 +38,7 @@ import ayushtomer from "../assets/founder/ayushtomar.png"
       image: founderimg ,
       description: 'As Founder, Joe envisioned The Smile from witnessing the untapped potential in every heart, creating a movement to bridge love with wisdom and empower lives globally.'
     };
-  
+
     const vicePresident = {
       name: 'Mitesh Patil',
       role: 'Project Manager',
@@ -48,8 +46,6 @@ import ayushtomer from "../assets/founder/ayushtomar.png"
       description: 'Mitesh, as Project Manager, turns ideas into results with clarity, focus, and impact.'
     };
 
-    
-  
     const faqs = [
       {
         question: "What is The Smile?",
@@ -216,7 +212,7 @@ import ayushtomer from "../assets/founder/ayushtomar.png"
             {/* Founder and President in one row */}
             <div className="mb-12 md:mb-16 lg:mb-20">
               <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-gray-600 mb-6 md:mb-8">Leadership</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 gap-6 md:gap-8 max-w-md mx-auto">
                 {/* Founder Card */}
                 <div 
                   className={`bg-white rounded-xl md:rounded-2xl shadow-lg p-6 md:p-8 text-center transition-all duration-300 border border-gray-100 cursor-pointer ${
@@ -250,45 +246,13 @@ import ayushtomer from "../assets/founder/ayushtomar.png"
                   </div>
                 </div>
   
-                {/* President Card */}
-                <div 
-                  className={`bg-white rounded-xl md:rounded-2xl shadow-lg p-6 md:p-8 text-center transition-all duration-300 border border-gray-100 cursor-pointer ${
-                    hoveredCard === 'president-0' ? 'transform -translate-y-2 shadow-2xl shadow-blue-500/25' : ''
-                  }`}
-                  onMouseEnter={() => handleCardHover(0, 'president')}
-                  onMouseLeave={handleCardLeave}
-                >
-                  <div className="relative inline-block mb-4 md:mb-6">
-                    <img 
-                      src={president.image}
-                      alt={president.name}
-                      className={`w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded-full object-cover shadow-md mx-auto transition-all duration-300 border-2 border-gray-100 ${
-                        hoveredCard === 'president-0' ? 'transform scale-110 shadow-lg' : ''
-                      }`}
-                    />
-                    <div className="absolute -bottom-1 -right-1 md:bottom-0 md:right-0 w-6 h-6 md:w-8 md:h-8 bg-gradient-to-br from-blue-500 to-orange-500 rounded-full flex items-center justify-center border-2 md:border-3 border-white">
-                      <Smile size={12} className="md:w-4 md:h-4" color="white" />
-                    </div>
-                  </div>
-                  <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-2">{president.name}</h4>
-                  <p className="text-blue-500 font-medium text-base md:text-lg mb-4">{president.role}</p>
-                  <p className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed mb-6">{president.description}</p>
-                  <div className="flex justify-center gap-3 md:gap-4 flex-wrap">
-                    <a href='https://www.linkedin.com/in/aviral-tomarrr/' target='_blank' className="px-3 py-2 md:px-4 md:py-2 bg-gray-100 text-blue-500 rounded-full text-xs sm:text-sm md:text-base font-medium hover:bg-blue-500 hover:text-white transition-all duration-300 hover:-translate-y-1">
-                      LinkedIn
-                    </a>
-                    <a href='https://www.instagram.com/aviraltomarofficial/' target='_blank' className="px-3 py-2 md:px-4 md:py-2 bg-gray-100 text-blue-500 rounded-full text-xs sm:text-sm md:text-base font-medium hover:bg-blue-500 hover:text-white transition-all duration-300 hover:-translate-y-1">
-                      Instagram
-                    </a>
-                  </div>
-                </div>
               </div>
             </div>
   
             {/* Project Manager and Team Member */}
             <div>
               <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-gray-600 mb-6 md:mb-8">Team Members</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+              <div className="grid grid-cols-1 gap-6 max-w-sm mx-auto">
                 {/* Project Manager Card */}
                 <div 
                   className={`bg-white rounded-xl shadow-md p-4 md:p-6 text-center transition-all duration-300 border border-gray-100 cursor-pointer ${
@@ -319,35 +283,6 @@ import ayushtomer from "../assets/founder/ayushtomar.png"
                   </div>
                 </div>
   
-                {/* New Team Member Card */}
-                <div 
-                  className={`bg-white rounded-xl shadow-md p-4 md:p-6 text-center transition-all duration-300 border border-gray-100 cursor-pointer ${
-                    hoveredCard === 'team-0' ? 'transform -translate-y-2 shadow-xl shadow-blue-500/25' : ''
-                  }`}
-                  onMouseEnter={() => handleCardHover(0, 'team')}
-                  onMouseLeave={handleCardLeave}
-                >
-                  <div className="relative inline-block mb-3 md:mb-4">
-                    <img 
-                      src={teamMember.image}
-                      alt={teamMember.name}
-                      className={`w-20 h-20 md:w-28 md:h-28 rounded-full object-cover shadow-md mx-auto transition-all duration-300 border-2 border-gray-100 ${
-                        hoveredCard === 'team-0' ? 'transform scale-110 shadow-lg' : ''
-                      }`}
-                    />
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 md:w-7 md:h-7 bg-gradient-to-br from-blue-500 to-orange-500 rounded-full flex items-center justify-center border-2 border-white">
-                      <Smile size={10} className="md:w-3 md:h-3" color="white" />
-                    </div>
-                  </div>
-                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-1">{teamMember.name}</h4>
-                  <p className="text-blue-500 font-medium text-sm md:text-base mb-3">{teamMember.role}</p>
-                  <p className="text-gray-600 text-xs sm:text-sm md:text-base leading-relaxed mb-4">{teamMember.description}</p>
-                  <div className="flex justify-center gap-2 md:gap-3 flex-wrap">
-                    <a href='https://www.linkedin.com/in/ayush-kumar-207241347?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' target='_blank' className="px-2 py-1 md:px-3 md:py-2 bg-gray-100 text-blue-500 rounded-full text-xs md:text-sm font-medium hover:bg-blue-500 hover:text-white transition-all duration-300 hover:-translate-y-1">
-                      LinkedIn
-                    </a>
-                  </div>
-                </div>
               </div>
             </div>
           </section>
