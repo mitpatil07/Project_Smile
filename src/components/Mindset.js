@@ -11,12 +11,7 @@ const mentors = [
     img: joe,
     link: "https://www.youtube.com/playlist?list=PLFGAQbILBvByY1AlrLy0d98xcz1r4LLAD",
   },
-  {
-    name: "Aviral Tomar",
-    role: "A motivational voice guiding people towards achieving their goals and unlocking their potential.",
-    img: aviraltomar,
-    link: "https://www.youtube.com/playlist?list=PLFGAQbILBvBy9yEprNXPxz0R-PTASyTf4",
-  },
+
 ];
 
 export default function MindsetSection() {
